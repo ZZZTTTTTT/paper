@@ -36,8 +36,8 @@ pd.set_option('display.max_colwidth',1000)
 
 
 
-class LSTM_demo:
-    def __init__(self,n_hours = 3,n_features = 8):
+class LSTM_Demo:
+    def __init__(self,n_hours = 3,n_features = 10):
         self.n_hours=n_hours
         self.n_features=n_features
         self.model=None
@@ -45,7 +45,7 @@ class LSTM_demo:
         self.history=None
     def load_data(self):
         # load dataset
-        dataset = read_csv('pollution.csv', header=0, index_col=0)
+        dataset = read_csv('devices.csv', header=0, index_col=0)
         return dataset
 
     def split_train_test(self,reframed):
@@ -53,7 +53,8 @@ class LSTM_demo:
         # split into train and test sets
         values = reframed.values
         # 用一年的数据来训练
-        n_train_hours = 365 * 24
+        # n_train_hours = 365 * 24
+        n_train_hours = 60
         train = values[:n_train_hours, :]
         test = values[n_train_hours:, :]
 
@@ -64,16 +65,15 @@ class LSTM_demo:
         test_X, test_y = test[:, :n_obs], test[:, -self.n_features]
         return train_X,test_X, test_y, train_y
     def maxmin_scaler(self,dataset):
-        values = dataset.values
 
-        # 对“风向”列进行整数编码
-        encoder = LabelEncoder()
-        values[:, 4] = encoder.fit_transform(values[:, 4])
+        #处理缺失值
+        dataset=dataset.fillna(dataset.mean())
+        # print(dataset.isnull().sum())
+        values = dataset.values
         values = values.astype('float32')
         # 标准化/放缩 特征值在（0,1）之间
         self.scaler = MinMaxScaler(feature_range=(0, 1))
         scaled = self.scaler.fit_transform(values)
-
         return scaled
 
     def series_to_supervised(self,data, n_in=1, n_out=1, dropnan=True):
@@ -109,7 +109,7 @@ class LSTM_demo:
 
 
         # 转换成监督数据，四列数据，3->1，三组预测一组
-        # 用3小时数据预测一小时数据，8个特征值
+        # 用3小时数据预测一小时数据，10个特征值
 
         # 构造一个3->1的监督学习型数据
         reframed = self.series_to_supervised(scaled, self.n_hours, 1)
@@ -143,14 +143,14 @@ class LSTM_demo:
         # 将数据格式化成 n行 * 24列
         test_X = test_X.reshape((test_X.shape[0], self.n_hours * self.n_features))
         # 将预测列据和后7列数据拼接，因后续逆缩放时，数据形状要符合 n行*8列 的要求
-        inv_yhat = concatenate((yhat, test_X[:, -7:]), axis=1)
+        inv_yhat = concatenate((yhat, test_X[:, -9:]), axis=1)
         # 对拼接好的数据进行逆缩放
         inv_yhat = self.scaler.inverse_transform(inv_yhat)
         inv_yhat = inv_yhat[:, 0]
 
         test_y = test_y.reshape((len(test_y), 1))
         # 将真实列据和后7列数据拼接，因后续逆缩放时，数据形状要符合 n行*8列 的要求
-        inv_y = concatenate((test_y, test_X[:, -7:]), axis=1)
+        inv_y = concatenate((test_y, test_X[:, -9:]), axis=1)
         # 对拼接好的数据进行逆缩放
         inv_y = self.scaler.inverse_transform(inv_y)
         inv_y = inv_y[:, 0]
@@ -164,13 +164,13 @@ class LSTM_demo:
         # plot history
         # pyplot.plot(self.history.history['loss'], label='train')
         # pyplot.plot(self.history.history['val_loss'], label='test')
-        pyplot.plot(inv_y, label='train')
-        # pyplot.plot(inv_yhat, label='test')
+        pyplot.plot(inv_y, label='y')
+        pyplot.plot(inv_yhat, label='yhat')
         pyplot.legend()
         pyplot.show()
 
 
 if __name__ == "__main__":
-    demo = LSTM_demo()     #加载demo类
+    demo = LSTM_Demo()     #加载类
     demo.do_train()
     demo.do_predict()

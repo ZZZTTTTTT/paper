@@ -86,5 +86,5 @@ if __name__ == '__main__':
     device2=get_devices_df(root,'010223M01','01')
     device3=get_devices_df(root,'170201M06','01')
     devices_df=merge_df_list([device1,device2,device3],'timestamp')
-    devices_df.to_csv('./result.csv', encoding="utf_8_sig", mode="w")
+    devices_df.to_csv('./result.csv', encoding="utf_8_sig", mode="w",index=False)
     # print(devices_df)
