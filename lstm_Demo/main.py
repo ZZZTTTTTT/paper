@@ -1,31 +1,24 @@
 from math import sqrt
 from numpy import concatenate
 from matplotlib import pyplot
+import numpy as np
 from sklearn.metrics import mean_squared_error
 from keras.models import Sequential
-from keras.layers import Dense
+from keras.layers import Dense, Dropout
 from keras.layers import LSTM
 from pandas import read_csv
 from pandas import DataFrame
 from pandas import concat
 from sklearn.preprocessing import MinMaxScaler
+from keras.optimizers import Adam
+from keras.initializers import Constant
 from sklearn.preprocessing import LabelEncoder
-
+from keras.regularizers import l2
 import pandas as pd
 
 
 
-"""
-本文是LSTM多元预测
-用3个步长的数据预测1个步长的数据
-包含：
-对数据进行缩放，缩放格式为n行*8列，因为数据没有季节性，所以不做差分
-对枚举列（风向）进行数字编码
-构造3->1的监督学习数据
-构造网络开始预测
-将预测结果重新拼接为n行*8列数据
-数据逆缩放，求RSME误差
-"""
+
 
 
 
@@ -98,7 +91,7 @@ class LSTM_Demo:
         agg = concat(cols, axis=1)
         # 给合并后的数据添加列名
         agg.columns = names
-        print(agg)
+        # print(agg)
         # 删除NaN值列
         if dropnan:
             agg.dropna(inplace=True)
@@ -126,12 +119,16 @@ class LSTM_Demo:
 
         # 设计网络
         self.model = Sequential()
-        self.model.add(LSTM(50, input_shape=(train_X.shape[1], train_X.shape[2])))
+        # kernel_initializer = Constant(value=1.0), bias_initializer = 'zeros'
+        self.model.add(LSTM(10, input_shape=(train_X.shape[1], train_X.shape[2]), kernel_initializer=Constant(value=1.0), bias_initializer='zeros',kernel_regularizer=l2(0.1), bias_regularizer=l2(0.05)))
+        self.model.add(Dropout(0.2))
         self.model.add(Dense(1))
-        self.model.compile(loss='mae', optimizer='adam')
+        self.model.compile(loss='mae', optimizer=Adam(learning_rate=1e-3))
         # 拟合网络
-        self.history = self.model.fit(train_X, train_y, epochs=50, batch_size=72, validation_data=(test_X, test_y), verbose=2,
+        self.history = self.model.fit(train_X, train_y, epochs=100, batch_size=10, validation_data=(test_X, test_y), verbose=1,
                             shuffle=False)
+
+        print(self.model.evaluate(test_X, test_y))
 
 
     def do_predict(self):
@@ -162,10 +159,13 @@ class LSTM_Demo:
 
     def plot(self,inv_y,inv_yhat):
         # plot history
-        # pyplot.plot(self.history.history['loss'], label='train')
-        # pyplot.plot(self.history.history['val_loss'], label='test')
-        pyplot.plot(inv_y, label='y')
-        pyplot.plot(inv_yhat, label='yhat')
+        pyplot.plot(self.history.history['loss'], label='loss')
+        pyplot.plot(self.history.history['val_loss'], label='val_loss')
+
+        # pyplot.plot(self.history.history['acc'], label='acc')
+        # pyplot.plot(self.history.history['val_acc'], label='val_acc')
+        # pyplot.plot(inv_y, label='y')
+        # pyplot.plot(inv_yhat, label='yhat')
         pyplot.legend()
         pyplot.show()
 

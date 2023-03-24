@@ -82,9 +82,10 @@ def get_devices_df(path,device_code,point_name,method='avg'):
 if __name__ == '__main__':
     root = './data'
     #070116M02,010221M01
-    device1=get_devices_df(root,'070116M02','01')
-    device2=get_devices_df(root,'010223M01','01')
-    device3=get_devices_df(root,'170201M06','01')
+    device1=get_devices_df(root,'070704M01','01')
+    device2=get_devices_df(root,'070711M01','01')
+    device3=get_devices_df(root,'070712M01','01')
     devices_df=merge_df_list([device1,device2,device3],'timestamp')
+    print(devices_df)
+
     devices_df.to_csv('./result.csv', encoding="utf_8_sig", mode="w",index=False)
-    # print(devices_df)
