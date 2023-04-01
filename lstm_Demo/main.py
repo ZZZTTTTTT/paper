@@ -30,7 +30,7 @@ pd.set_option('display.max_colwidth',1000)
 
 
 class LSTM_Demo:
-    def __init__(self,n_hours = 3,n_features = 10):
+    def __init__(self,n_hours = 3,n_features = 12):
         self.n_hours=n_hours
         self.n_features=n_features
         self.model=None
@@ -38,16 +38,15 @@ class LSTM_Demo:
         self.history=None
     def load_data(self):
         # load dataset
-        dataset = read_csv('devices.csv', header=0, index_col=0)
+        dataset = read_csv('../data_processing/result.csv', header=0, index_col=0,encoding="ANSI")
         return dataset
 
     def split_train_test(self,reframed):
 
         # split into train and test sets
         values = reframed.values
-        # 用一年的数据来训练
-        # n_train_hours = 365 * 24
-        n_train_hours = 60
+
+        n_train_hours = 13460
         train = values[:n_train_hours, :]
         test = values[n_train_hours:, :]
 
@@ -125,7 +124,7 @@ class LSTM_Demo:
         self.model.add(Dense(1))
         self.model.compile(loss='mae', optimizer=Adam(learning_rate=1e-3))
         # 拟合网络
-        self.history = self.model.fit(train_X, train_y, epochs=100, batch_size=10, validation_data=(test_X, test_y), verbose=1,
+        self.history = self.model.fit(train_X, train_y, epochs=30, batch_size=50, validation_data=(test_X, test_y), verbose=1,
                             shuffle=False)
 
         print(self.model.evaluate(test_X, test_y))
@@ -140,14 +139,14 @@ class LSTM_Demo:
         # 将数据格式化成 n行 * 24列
         test_X = test_X.reshape((test_X.shape[0], self.n_hours * self.n_features))
         # 将预测列据和后7列数据拼接，因后续逆缩放时，数据形状要符合 n行*8列 的要求
-        inv_yhat = concatenate((yhat, test_X[:, -9:]), axis=1)
+        inv_yhat = concatenate((yhat, test_X[:, (-self.n_features+1):]), axis=1)
         # 对拼接好的数据进行逆缩放
         inv_yhat = self.scaler.inverse_transform(inv_yhat)
         inv_yhat = inv_yhat[:, 0]
 
         test_y = test_y.reshape((len(test_y), 1))
         # 将真实列据和后7列数据拼接，因后续逆缩放时，数据形状要符合 n行*8列 的要求
-        inv_y = concatenate((test_y, test_X[:, -9:]), axis=1)
+        inv_y = concatenate((test_y, test_X[:, (-self.n_features+1):]), axis=1)
         # 对拼接好的数据进行逆缩放
         inv_y = self.scaler.inverse_transform(inv_y)
         inv_y = inv_y[:, 0]
@@ -159,13 +158,16 @@ class LSTM_Demo:
 
     def plot(self,inv_y,inv_yhat):
         # plot history
+        pyplot.subplot(211)
         pyplot.plot(self.history.history['loss'], label='loss')
         pyplot.plot(self.history.history['val_loss'], label='val_loss')
+        pyplot.legend()
 
         # pyplot.plot(self.history.history['acc'], label='acc')
         # pyplot.plot(self.history.history['val_acc'], label='val_acc')
-        # pyplot.plot(inv_y, label='y')
-        # pyplot.plot(inv_yhat, label='yhat')
+        pyplot.subplot(223)
+        pyplot.plot(inv_y, label='y')
+        pyplot.plot(inv_yhat, label='yhat')
         pyplot.legend()
         pyplot.show()
 
