@@ -53,7 +53,7 @@ scaled = scaler.fit_transform(values)
 
 # 用3小时数据预测一小时数据，8个特征值
 n_hours = 3
-n_features = 8
+n_features = 4
 # 构造一个3->1的监督学习型数据
 reframed = series_to_supervised(scaled, n_hours, 1)
 print(reframed.shape)
@@ -61,7 +61,7 @@ print(reframed.shape)
 # split into train and test sets
 values = reframed.values
 # 用一年的数据来训练
-n_train_hours = 365 * 24
+n_train_hours = 13460
 train = values[:n_train_hours, :]
 test = values[n_train_hours:, :]
 

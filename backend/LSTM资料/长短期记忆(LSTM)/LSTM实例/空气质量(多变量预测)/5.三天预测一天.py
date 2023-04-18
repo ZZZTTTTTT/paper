@@ -50,14 +50,14 @@ yhat = model.predict(test_X)
 # 将数据格式化成 n行 * 24列
 test_X = test_X.reshape((test_X.shape[0], n_hours*n_features))
 # 将预测列据和后7列数据拼接，因后续逆缩放时，数据形状要符合 n行*8列 的要求
-inv_yhat = concatenate((yhat, test_X[:, -7:]), axis=1)
+inv_yhat = concatenate((yhat, test_X[:, -3:]), axis=1)
 # 对拼接好的数据进行逆缩放
 inv_yhat = scaler.inverse_transform(inv_yhat)
 inv_yhat = inv_yhat[:,0]
 
 test_y = test_y.reshape((len(test_y), 1))
 # 将真实列据和后7列数据拼接，因后续逆缩放时，数据形状要符合 n行*8列 的要求
-inv_y = concatenate((test_y, test_X[:, -7:]), axis=1)
+inv_y = concatenate((test_y, test_X[:, -3:]), axis=1)
 # 对拼接好的数据进行逆缩放
 inv_y = scaler.inverse_transform(inv_y)
 inv_y = inv_y[:,0]

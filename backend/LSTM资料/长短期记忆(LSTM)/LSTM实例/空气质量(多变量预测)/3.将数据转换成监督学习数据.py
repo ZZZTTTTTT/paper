@@ -51,7 +51,7 @@ def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
     return agg
 
 # load dataset
-dataset = read_csv('pollution.csv', header=0, index_col=0)
+dataset = read_csv('devices.csv', header=0, index_col=0)
 values = dataset.values
 print(values)
 # 对第四列“风向”进行数字编码转换

@@ -30,15 +30,17 @@ pd.set_option('display.max_colwidth',1000)
 
 
 class LSTM_Demo:
-    def __init__(self,n_hours = 3,n_features = 12):
+    def __init__(self,n_hours = 3):
         self.n_hours=n_hours
-        self.n_features=n_features
+        self.n_features=12
         self.model=None
         self.scaler=None
         self.history=None
     def load_data(self):
         # load dataset
         dataset = read_csv('../data_processing/result.csv', header=0, index_col=0,encoding="ANSI")
+        # dataset = read_csv('single.csv', header=0, index_col=0,encoding="ANSI")
+        self.n_features=dataset.shape[1]
         return dataset
 
     def split_train_test(self,reframed):
@@ -90,7 +92,7 @@ class LSTM_Demo:
         agg = concat(cols, axis=1)
         # 给合并后的数据添加列名
         agg.columns = names
-        # print(agg)
+        print(agg)
         # 删除NaN值列
         if dropnan:
             agg.dropna(inplace=True)
@@ -104,7 +106,7 @@ class LSTM_Demo:
         # 用3小时数据预测一小时数据，10个特征值
 
         # 构造一个3->1的监督学习型数据
-        reframed = self.series_to_supervised(scaled, self.n_hours, 1)
+        reframed = self.series_to_supervised(scaled, self.n_hours, 2)
         train_X,test_X, test_y, train_y=self.split_train_test(reframed)
         # 将数据转换为3D输入，timesteps=3，3条数据预测1条 [samples, timesteps, features]
         train_X = train_X.reshape((train_X.shape[0], self.n_hours, self.n_features))
