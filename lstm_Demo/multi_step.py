@@ -50,25 +50,17 @@ def difference(dataset, interval=1):
 
 # 数据特征工程,差分，缩放，分割
 def prepare_data(series, n_test, n_lag, n_seq):
+    series=series.fillna(series.mean())
     # 提取文本中的数据
     raw_values = series.values
     # 对数据进行差分计算
-    diff_series = difference(raw_values, 1)
-    # 提取差分后的数据
-    diff_values = diff_series.values
-    print(diff_values)
-    # 重构成n行一列的数据
-    diff_values = diff_values.reshape(len(diff_values), 1)
-    print(diff_values)
+
     # 定义数据缩放在(-1，1)之间
     scaler = MinMaxScaler(feature_range=(-1, 1))
     print(scaler)
     # 对数据进行缩放
-    scaled_values = scaler.fit_transform(diff_values)
-    print(scaled_values)
-    # 将缩放后的数据重构成n行一列的数据
-    scaled_values = scaled_values.reshape(len(scaled_values), 1)
-    print(scaled_values)
+    scaled_values = scaler.fit_transform(raw_values)
+
     # 将数据构建成步长为n_seq的监督学习型数据
     supervised = series_to_supervised(scaled_values, n_lag, n_seq)
     print(supervised)
@@ -172,14 +164,14 @@ def plot_forecasts(series, forecasts, n_test):
 	pyplot.show()
 
 # 加载数据
-series = read_csv('shampoo-sales.csv', header=0, parse_dates=[0], index_col=0, squeeze=True, date_parser=parser)
+series = read_csv('../data_processing/result.csv', header=0, index_col=0, squeeze=True, encoding="ANSI")
 # 参数配置
-n_lag = 4       # 用一个数据
-n_seq = 4       # 预测三个数据
+n_lag = 3       # n_in
+n_seq = 2       # n_out
 n_test = 10     # 测试数据为10组
-n_epochs = 1500 # 训练1500次
-n_batch = 1     # 每次训练几组数据
-n_neurons = 1   # 神经节点为1
+n_epochs = 30 # 训练次数
+n_batch = 48     # 每次训练几组数据
+n_neurons = 10   # 神经节点为1
 # 数据差分，缩放，重构成监督学习型数据
 scaler, train, test = prepare_data(series, n_test, n_lag, n_seq)
 # 拟合模型

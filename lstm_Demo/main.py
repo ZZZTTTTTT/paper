@@ -36,6 +36,8 @@ class LSTM_Demo:
         self.model=None
         self.scaler=None
         self.history=None
+        self.n_seq=2
+        self.n_batch=50
     def load_data(self):
         # load dataset
         dataset = read_csv('../data_processing/result.csv', header=0, index_col=0,encoding="ANSI")
@@ -53,10 +55,10 @@ class LSTM_Demo:
         test = values[n_train_hours:, :]
 
         # split into input and outputs
-        n_obs = self.n_hours * self.n_features
-        # 有32=(4*8)列数据，取前24=(3*8) 列作为X，倒数第8列=(第25列)作为Y
-        train_X, train_y = train[:, :n_obs], train[:, -self.n_features]
-        test_X, test_y = test[:, :n_obs], test[:, -self.n_features]
+        n_obs = self.n_seq * self.n_features
+        # 有60=(12*(3+2))列数据
+        train_X, train_y = train[:, :-n_obs], train[:,-n_obs :]
+        test_X, test_y = test[:, :-n_obs], test[:, -n_obs:]
         return train_X,test_X, test_y, train_y
     def maxmin_scaler(self,dataset):
 
@@ -106,7 +108,7 @@ class LSTM_Demo:
         # 用3小时数据预测一小时数据，10个特征值
 
         # 构造一个3->1的监督学习型数据
-        reframed = self.series_to_supervised(scaled, self.n_hours, 2)
+        reframed = self.series_to_supervised(scaled, self.n_hours, self.n_seq)
         train_X,test_X, test_y, train_y=self.split_train_test(reframed)
         # 将数据转换为3D输入，timesteps=3，3条数据预测1条 [samples, timesteps, features]
         train_X = train_X.reshape((train_X.shape[0], self.n_hours, self.n_features))
@@ -123,14 +125,14 @@ class LSTM_Demo:
         # kernel_initializer = Constant(value=1.0), bias_initializer = 'zeros'
         self.model.add(LSTM(10, input_shape=(train_X.shape[1], train_X.shape[2]), kernel_initializer=Constant(value=1.0), bias_initializer='zeros',kernel_regularizer=l2(0.1), bias_regularizer=l2(0.05)))
         self.model.add(Dropout(0.2))
-        self.model.add(Dense(1))
+        self.model.add(Dense(train_y.shape[1]))
         self.model.compile(loss='mae', optimizer=Adam(learning_rate=1e-3))
         # 拟合网络
-        self.history = self.model.fit(train_X, train_y, epochs=30, batch_size=50, validation_data=(test_X, test_y), verbose=1,
+        self.history = self.model.fit(train_X, train_y, epochs=30, batch_size=self.n_batch, validation_data=(test_X, test_y), verbose=1,
                             shuffle=False)
 
-        print(self.model.evaluate(test_X, test_y))
-
+        #多步预测
+        self.mutil_step_predict(test_X,test_y)
 
     def do_predict(self):
         train_X, test_X, test_y, train_y = self.get_splited_data()
@@ -158,6 +160,62 @@ class LSTM_Demo:
         self.plot(inv_y,inv_yhat)
         print('Test RMSE: %.3f' % rmse)
 
+    # LSTM 单步预测
+    def forecast_lstm(self,X):
+        X = X.reshape(1,X.shape[0],X.shape[1])
+        # 预测张量形状
+        forecast = self.model.predict(X, batch_size=self.n_batch)
+        # 将预测结果[[XX,XX,XX]]转换成list数组
+        return [x for x in forecast[0, :]]
+
+    # 用模型进行预测
+    def make_forecasts(self,test):
+        forecasts = list()
+        # 对X值进行逐个预测
+        for i in range(len(test)):
+
+            X = test[i, :]
+            # LSTM 单步预测
+            forecast = self.forecast_lstm( X )
+            # 存储预测数据
+            forecasts.append(forecast)
+        return forecasts
+
+    #多步预测
+    def mutil_step_predict(self,test_X,test_y):
+        forecasts = self.make_forecasts(test_X)
+        # 将预测后的数据逆转换
+        forecasts =self.inverse_transform(forecasts)
+        # 从测试数据中分离出y对应的真实值
+        actual = [row[:] for row in test_y]
+        # 对真实值逆转换
+        actual=self.inverse_transform(actual)
+        # 评估预测值和真实值的RSM
+        self.evaluate_forecasts(actual, forecasts, self.n_seq)
+        #作图
+        self.plot_forecasts(actual,forecasts,len(test_y)+self.n_seq)
+    def inverse_transform(self,forecasts):
+        inverted = list()
+        for i in range(len(forecasts)):
+            # create array from forecast
+            forecast = np.array(forecasts[i])
+            forecast = forecast.reshape(self.n_seq,self.n_features)
+
+            # 对拼接好的数据进行逆缩放
+            inv_yhat = self.scaler.inverse_transform(forecast)
+            # inv_yhat = inv_yhat[ 0,:]
+
+            inverted.append(inv_yhat)
+        return inverted
+
+    # 评估预测结果的均方差
+    def evaluate_forecasts(self,test, forecasts, n_seq):
+        for i in range(n_seq):
+            actual = [row[i][0] for row in test]
+            predicted = [forecast[i][0] for forecast in forecasts]
+            rmse = sqrt(mean_squared_error(actual, predicted))
+            print('t+%d RMSE: %f' % ((i + 1), rmse))
+
     def plot(self,inv_y,inv_yhat):
         # plot history
         pyplot.subplot(211)
@@ -173,8 +231,22 @@ class LSTM_Demo:
         pyplot.legend()
         pyplot.show()
 
+    # 多步预测作图
+    def plot_forecasts(self,series, forecasts, n_test):
+        actual=[row[0][0] for row in series]
+        # plot the entire dataset in blue
+        pyplot.plot(actual)
+        # pyplot.plot([row[0] for row in forecasts])
+        # plot the forecasts in red
+        for i in range(len(forecasts)):
+            xaxis = [x for x in range(i, i+self.n_seq)]
+            yaxis = [ forecasts[i][x][0] for x in range(0, self.n_seq)]
+            pyplot.plot(xaxis, yaxis, color='red')
+        # show the plot
+        pyplot.show()
+
 
 if __name__ == "__main__":
     demo = LSTM_Demo()     #加载类
     demo.do_train()
-    demo.do_predict()
+    # demo.do_predict()
