@@ -15,6 +15,7 @@ from keras.initializers import Constant
 from sklearn.preprocessing import LabelEncoder
 from keras.regularizers import l2
 import pandas as pd
+import abnormal_detect
 
 
 
@@ -241,7 +242,9 @@ class LSTM_Demo:
         for i in range(len(forecasts)):
             xaxis = [x for x in range(i, i+self.n_seq)]
             yaxis = [ forecasts[i][x][0] for x in range(0, self.n_seq)]
-            pyplot.plot(xaxis, yaxis, color='red')
+            pyplot.plot(xaxis, yaxis, color='g',linewidth=1,linestyle='--')
+        #圈出异常点
+        abnormal_detect.detect_outline(actual, [row[0][0] for row in forecasts])
         # show the plot
         pyplot.show()
 

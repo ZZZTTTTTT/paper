@@ -2,7 +2,9 @@
 
 '''
 
-Example of using a LSTM encoder-decoder to model a synthetic time series 
+Example of using a LSTM encoder-decoder to model a synthetic time series
+
+entrance file && single-step
 
 '''
 
