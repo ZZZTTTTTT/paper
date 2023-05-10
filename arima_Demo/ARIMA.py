@@ -3,20 +3,23 @@ import matplotlib.pyplot as plt
 from statsmodels.graphics.tsaplots import plot_acf
 from statsmodels.graphics.tsaplots import plot_pacf
 from statsmodels.tsa.stattools import adfuller as ADF
-#销量数据
-filename='./arima_data.xls'
+from pandas import read_csv
+
 #预测天数
 forrecastnum=5
-data=pd.read_excel(filename,index_col=u'日期')
+data = read_csv('../data_processing/result.csv', header=0, index_col=0, encoding="ANSI")
+
 plt.rcParams['font.sans-serif'] = ['SimHei']
 plt.rcParams['axes.unicode_minus'] = False
-# data.plot()
+plt.plot(data[13460:,-4])
 plt.title('Time Series')
 plt.show()
 #自相关系数
-plot_acf(data)
-plt.show()
-print(u'原始序列的ADF检验结果为：',ADF(data[u'销量']))
+# plot_acf(data)
+# plt.show()
+#处理缺失值
+data=data.fillna(data.mean())
+print(u'原始序列的ADF检验结果为：',ADF(data[u'表面温度']))
 #p值为0.9983759421514264，不平稳，所以进行差分，采用的是一阶差分，所以d=1
 D_data=data.diff(periods=1).dropna()
 D_data.columns=[u'销量差分']

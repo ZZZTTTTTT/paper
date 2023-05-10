@@ -2,16 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5c2f3057-6758-4561-ae14-f62d3cd1272b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../../arima_Demo/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../arima_Demo/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../../arima_Demo/.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../arima_Demo/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../arima_Demo/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../arima_Demo/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../arima_Demo/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../arima_Demo/.idea/数据预处理.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../arima_Demo/data.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../arima_Demo/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../arima_Demo/时间序列.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../LSTM资料/LSTM系列/Multi-Step LSTM预测2/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../LSTM资料/LSTM系列/Multi-Step LSTM预测2/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lstm_Demo/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../lstm_Demo/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/ARIMA_demo/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/ARIMA_demo/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/ARIMA_demo/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/ARIMA_demo/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/ARIMA_demo/ARIMA.py" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/ARIMA_demo/ARIMA.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/LSTM资料/LSTM系列/Multi-Step LSTM预测2/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/LSTM资料/LSTM系列/Multi-Step LSTM预测2/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lstm_Demo/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../lstm_Demo/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,7 +14,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="JupyterTrust" id="17ecd3c4-2aaf-4d0e-b341-377f90b4a720" />
   <component name="ProjectId" id="2AWAAMJdJVfJHe0yk5BsWYWW9UL" />
@@ -74,7 +69,8 @@
       <workItem from="1655171566056" duration="1013000" />
       <workItem from="1673074393477" duration="1999000" />
       <workItem from="1677564947627" duration="413000" />
-      <workItem from="1683687812846" duration="3585000" />
+      <workItem from="1683687812846" duration="355000" />
+      <workItem from="1683688436921" duration="5206000" />
     </task>
     <servers />
   </component>
@@ -82,57 +78,62 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1237" height="222" key="GridCell.Tab.0.bottom" timestamp="1683699602010">
+    <state width="1237" height="99" key="GridCell.Tab.0.bottom" timestamp="1683699775738">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="222" key="GridCell.Tab.0.bottom/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683699602010" />
-    <state width="1237" height="222" key="GridCell.Tab.0.center" timestamp="1683699602009">
+    <state width="1237" height="99" key="GridCell.Tab.0.bottom/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683699775738" />
+    <state width="1237" height="99" key="GridCell.Tab.0.center" timestamp="1683699775738">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="222" key="GridCell.Tab.0.center/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683699602009" />
-    <state width="1237" height="222" key="GridCell.Tab.0.left" timestamp="1683699602009">
+    <state width="1237" height="99" key="GridCell.Tab.0.center/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683699775738" />
+    <state width="1237" height="99" key="GridCell.Tab.0.left" timestamp="1683699775738">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="222" key="GridCell.Tab.0.left/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683699602009" />
-    <state width="1237" height="222" key="GridCell.Tab.0.right" timestamp="1683699602010">
+    <state width="1237" height="99" key="GridCell.Tab.0.left/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683699775738" />
+    <state width="1237" height="99" key="GridCell.Tab.0.right" timestamp="1683699775738">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="222" key="GridCell.Tab.0.right/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683699602010" />
-    <state width="1237" height="222" key="GridCell.Tab.1.bottom" timestamp="1683699602010">
+    <state width="1237" height="99" key="GridCell.Tab.0.right/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683699775738" />
+    <state width="1237" height="214" key="GridCell.Tab.1.bottom" timestamp="1683699564500">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="222" key="GridCell.Tab.1.bottom/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683699602010" />
-    <state width="1237" height="222" key="GridCell.Tab.1.center" timestamp="1683699602010">
+    <state width="1237" height="214" key="GridCell.Tab.1.bottom/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683699564500" />
+    <state width="1237" height="214" key="GridCell.Tab.1.center" timestamp="1683699564500">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="222" key="GridCell.Tab.1.center/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683699602010" />
-    <state width="1237" height="222" key="GridCell.Tab.1.left" timestamp="1683699602010">
+    <state width="1237" height="214" key="GridCell.Tab.1.center/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683699564500" />
+    <state width="1237" height="214" key="GridCell.Tab.1.left" timestamp="1683699564499">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="222" key="GridCell.Tab.1.left/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683699602010" />
-    <state width="1237" height="222" key="GridCell.Tab.1.right" timestamp="1683699602010">
+    <state width="1237" height="214" key="GridCell.Tab.1.left/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683699564499" />
+    <state width="1237" height="214" key="GridCell.Tab.1.right" timestamp="1683699564500">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="222" key="GridCell.Tab.1.right/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683699602010" />
+    <state width="1237" height="214" key="GridCell.Tab.1.right/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683699564500" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ARIMA.py</url>
-          <line>18</line>
+          <line>21</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ARIMA.py</url>
-          <line>10</line>
+          <line>9</line>
           <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ARIMA.py</url>
+          <line>11</line>
+          <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/ARIMA_demo$ARIMA.coverage" NAME="ARIMA Coverage Results" MODIFIED="1683699601989" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ARIMA_demo$ARIMA.coverage" NAME="ARIMA Coverage Results" MODIFIED="1683699775729" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ARIMA$ARIMA.coverage" NAME="ARIMA Coverage Results" MODIFIED="1673076399144" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

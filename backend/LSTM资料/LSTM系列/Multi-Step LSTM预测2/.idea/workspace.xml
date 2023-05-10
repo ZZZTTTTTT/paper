@@ -20,7 +20,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dbadeb44-e127-4405-aa3d-b73fdcb87f2c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../../../../lstm_Demo/mutil_step.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../arima_Demo/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../arima_Demo/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../arima_Demo/.idea/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../arima_Demo/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../arima_Demo/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../arima_Demo/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../arima_Demo/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../arima_Demo/.idea/数据预处理.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../arima_Demo/data.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../arima_Demo/main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../arima_Demo/时间序列.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../ARIMA_demo/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../ARIMA_demo/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../ARIMA_demo/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../ARIMA_demo/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../ARIMA_demo/ARIMA.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../../ARIMA_demo/ARIMA.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../lstm_Demo/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../lstm_Demo/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,7 +42,7 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../../.." />
   </component>
-  <component name="JupyterTrust" id="77004146-af90-43e9-bf8d-a926649c6ad6" />
+  <component name="JupyterTrust" id="17ecd3c4-2aaf-4d0e-b341-377f90b4a720" />
   <component name="ProjectId" id="2OdGtmFgiHVUxETsgoZTZQ87YM4" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -50,6 +62,7 @@
       <option name="presentableId" value="Default" />
       <updated>1681883262036</updated>
       <workItem from="1681883263152" duration="24000" />
+      <workItem from="1683698026956" duration="1011000" />
     </task>
     <servers />
   </component>
@@ -66,5 +79,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

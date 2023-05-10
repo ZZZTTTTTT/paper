@@ -102,6 +102,10 @@ class LSTM_Demo:
         return agg
     def get_splited_data(self):
         dataset=self.load_data()
+        #平稳性检验p值8.429351731055096e-11，是平稳的
+
+        #一阶差分
+        #归一化
         scaled=self.maxmin_scaler(dataset)
 
 
