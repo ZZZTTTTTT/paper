@@ -17,6 +17,7 @@ from keras.regularizers import l2
 import pandas as pd
 import abnormal_detect
 
+from matplotlib.pyplot import MultipleLocator
 
 
 
@@ -37,7 +38,7 @@ class LSTM_Demo:
         self.model=None
         self.scaler=None
         self.history=None
-        self.n_seq=2
+        self.n_seq=5
         self.n_batch=50
     def load_data(self):
         # load dataset
@@ -128,12 +129,12 @@ class LSTM_Demo:
         # 设计网络
         self.model = Sequential()
         # kernel_initializer = Constant(value=1.0), bias_initializer = 'zeros'
-        self.model.add(LSTM(10, input_shape=(train_X.shape[1], train_X.shape[2]), kernel_initializer=Constant(value=1.0), bias_initializer='zeros',kernel_regularizer=l2(0.1), bias_regularizer=l2(0.05)))
+        self.model.add(LSTM(50, input_shape=(train_X.shape[1], train_X.shape[2]), kernel_initializer=Constant(value=1.0), bias_initializer='zeros'))
         self.model.add(Dropout(0.2))
         self.model.add(Dense(train_y.shape[1]))
         self.model.compile(loss='mae', optimizer=Adam(learning_rate=1e-3))
         # 拟合网络
-        self.history = self.model.fit(train_X, train_y, epochs=30, batch_size=self.n_batch, validation_data=(test_X, test_y), verbose=1,
+        self.history = self.model.fit(train_X, train_y, epochs=125, batch_size=self.n_batch, validation_data=(test_X, test_y), verbose=1,
                             shuffle=False)
 
         #多步预测
@@ -239,9 +240,15 @@ class LSTM_Demo:
     # 多步预测作图
     def plot_forecasts(self,series, forecasts, n_test):
         pyplot.subplot(211)
+
         pyplot.plot(self.history.history['loss'], label='loss')
         pyplot.plot(self.history.history['val_loss'], label='val_loss')
         pyplot.legend()
+        ax = pyplot.gca()
+        y_major_locator = MultipleLocator(0.025)
+        # ax为两条坐标轴的实例
+        ax.yaxis.set_major_locator(y_major_locator)
+
         pyplot.subplot(223)
         actual=[row[0][-4] for row in series]
         # plot the entire dataset in blue
@@ -252,7 +259,7 @@ class LSTM_Demo:
             xaxis = [x for x in range(i, i+self.n_seq)]
             yaxis = [ forecasts[i][x][-4] for x in range(0, self.n_seq)]
             pyplot.plot(xaxis, yaxis, color='g',linewidth=1,linestyle='--')
-        #圈出异常点
+        #圈出异常点(这里是按第一个找异常点)
         abnormal_detect.detect_outline(actual, [row[0][-4] for row in forecasts])
         # show the plot
         pyplot.show()
