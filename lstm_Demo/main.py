@@ -216,8 +216,8 @@ class LSTM_Demo:
     # 评估预测结果的均方差
     def evaluate_forecasts(self,test, forecasts, n_seq):
         for i in range(n_seq):
-            actual = [row[i][0] for row in test]
-            predicted = [forecast[i][0] for forecast in forecasts]
+            actual = [row[i][-4] for row in test]
+            predicted = [forecast[i][-4] for forecast in forecasts]
             rmse = sqrt(mean_squared_error(actual, predicted))
             print('t+%d RMSE: %f' % ((i + 1), rmse))
 
@@ -238,17 +238,22 @@ class LSTM_Demo:
 
     # 多步预测作图
     def plot_forecasts(self,series, forecasts, n_test):
-        actual=[row[0][0] for row in series]
+        pyplot.subplot(211)
+        pyplot.plot(self.history.history['loss'], label='loss')
+        pyplot.plot(self.history.history['val_loss'], label='val_loss')
+        pyplot.legend()
+        pyplot.subplot(223)
+        actual=[row[0][-4] for row in series]
         # plot the entire dataset in blue
         pyplot.plot(actual)
         # pyplot.plot([row[0] for row in forecasts])
         # plot the forecasts in red
         for i in range(len(forecasts)):
             xaxis = [x for x in range(i, i+self.n_seq)]
-            yaxis = [ forecasts[i][x][0] for x in range(0, self.n_seq)]
+            yaxis = [ forecasts[i][x][-4] for x in range(0, self.n_seq)]
             pyplot.plot(xaxis, yaxis, color='g',linewidth=1,linestyle='--')
         #圈出异常点
-        abnormal_detect.detect_outline(actual, [row[0][0] for row in forecasts])
+        abnormal_detect.detect_outline(actual, [row[0][-4] for row in forecasts])
         # show the plot
         pyplot.show()
 

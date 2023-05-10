@@ -2,14 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5c2f3057-6758-4561-ae14-f62d3cd1272b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../../arima_Demo/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../arima_Demo/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../../arima_Demo/.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../arima_Demo/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../arima_Demo/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../arima_Demo/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../arima_Demo/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../arima_Demo/.idea/数据预处理.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../arima_Demo/data.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../arima_Demo/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../arima_Demo/时间序列.xlsx" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../LSTM资料/LSTM系列/Multi-Step LSTM预测2/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../LSTM资料/LSTM系列/Multi-Step LSTM预测2/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../lstm_Demo/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../lstm_Demo/main.py" afterDir="false" />
     </list>
@@ -82,38 +75,38 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1237" height="222" key="GridCell.Tab.0.bottom" timestamp="1683699602010">
+    <state width="1237" height="239" key="GridCell.Tab.0.bottom" timestamp="1683707101409">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="222" key="GridCell.Tab.0.bottom/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683699602010" />
-    <state width="1237" height="222" key="GridCell.Tab.0.center" timestamp="1683699602009">
+    <state width="1237" height="239" key="GridCell.Tab.0.bottom/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683707101409" />
+    <state width="1237" height="239" key="GridCell.Tab.0.center" timestamp="1683707101409">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="222" key="GridCell.Tab.0.center/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683699602009" />
-    <state width="1237" height="222" key="GridCell.Tab.0.left" timestamp="1683699602009">
+    <state width="1237" height="239" key="GridCell.Tab.0.center/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683707101409" />
+    <state width="1237" height="239" key="GridCell.Tab.0.left" timestamp="1683707101409">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="222" key="GridCell.Tab.0.left/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683699602009" />
-    <state width="1237" height="222" key="GridCell.Tab.0.right" timestamp="1683699602010">
+    <state width="1237" height="239" key="GridCell.Tab.0.left/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683707101409" />
+    <state width="1237" height="239" key="GridCell.Tab.0.right" timestamp="1683707101409">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="222" key="GridCell.Tab.0.right/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683699602010" />
-    <state width="1237" height="222" key="GridCell.Tab.1.bottom" timestamp="1683699602010">
+    <state width="1237" height="239" key="GridCell.Tab.0.right/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683707101409" />
+    <state width="1237" height="239" key="GridCell.Tab.1.bottom" timestamp="1683707101409">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="222" key="GridCell.Tab.1.bottom/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683699602010" />
-    <state width="1237" height="222" key="GridCell.Tab.1.center" timestamp="1683699602010">
+    <state width="1237" height="239" key="GridCell.Tab.1.bottom/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683707101409" />
+    <state width="1237" height="239" key="GridCell.Tab.1.center" timestamp="1683707101409">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="222" key="GridCell.Tab.1.center/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683699602010" />
-    <state width="1237" height="222" key="GridCell.Tab.1.left" timestamp="1683699602010">
+    <state width="1237" height="239" key="GridCell.Tab.1.center/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683707101409" />
+    <state width="1237" height="239" key="GridCell.Tab.1.left" timestamp="1683707101409">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="222" key="GridCell.Tab.1.left/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683699602010" />
-    <state width="1237" height="222" key="GridCell.Tab.1.right" timestamp="1683699602010">
+    <state width="1237" height="239" key="GridCell.Tab.1.left/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683707101409" />
+    <state width="1237" height="239" key="GridCell.Tab.1.right" timestamp="1683707101409">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="222" key="GridCell.Tab.1.right/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683699602010" />
+    <state width="1237" height="239" key="GridCell.Tab.1.right/0.0.1280.689/0.-1080.1920.1050@0.0.1280.689" timestamp="1683707101409" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -125,14 +118,14 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ARIMA.py</url>
-          <line>10</line>
-          <option name="timeStamp" value="2" />
+          <line>58</line>
+          <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/ARIMA_demo$ARIMA.coverage" NAME="ARIMA Coverage Results" MODIFIED="1683699601989" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ARIMA_demo$ARIMA.coverage" NAME="ARIMA Coverage Results" MODIFIED="1683707076570" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ARIMA$ARIMA.coverage" NAME="ARIMA Coverage Results" MODIFIED="1673076399144" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

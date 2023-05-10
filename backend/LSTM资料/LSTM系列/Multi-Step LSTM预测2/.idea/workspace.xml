@@ -20,15 +20,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dbadeb44-e127-4405-aa3d-b73fdcb87f2c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../../../../arima_Demo/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../arima_Demo/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../arima_Demo/.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../arima_Demo/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../arima_Demo/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../arima_Demo/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../arima_Demo/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../arima_Demo/.idea/数据预处理.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../arima_Demo/data.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../arima_Demo/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../arima_Demo/时间序列.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../ARIMA_demo/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../ARIMA_demo/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../ARIMA_demo/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../ARIMA_demo/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../ARIMA_demo/ARIMA.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../../ARIMA_demo/ARIMA.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />

@@ -10,7 +10,7 @@ forrecastnum=5
 data=pd.read_excel(filename,index_col=u'日期')
 plt.rcParams['font.sans-serif'] = ['SimHei']
 plt.rcParams['axes.unicode_minus'] = False
-# data.plot()
+data.plot()
 plt.title('Time Series')
 plt.show()
 #自相关系数
