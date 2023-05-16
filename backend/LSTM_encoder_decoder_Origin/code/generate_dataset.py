@@ -82,7 +82,7 @@ def windowed_dataset(y, input_window = 5, output_window = 1, stride = 1, num_fea
             start_y = stride * ii + input_window
             end_y = start_y + output_window 
             Y[:, ii, ff] = y[start_y:end_y, ff]
-
+    #返回的第二维的含义是windows的数量，计算公式num_windows = (len(array) - window_size) / stride + 1
     return X, Y
 
 

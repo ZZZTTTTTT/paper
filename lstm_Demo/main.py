@@ -38,7 +38,7 @@ class LSTM_Demo:
         self.model=None
         self.scaler=None
         self.history=None
-        self.n_seq=5
+        self.n_seq=30
         self.n_batch=50
     def load_data(self):
         # load dataset

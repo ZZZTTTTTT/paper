@@ -20,7 +20,9 @@ matplotlib.rcParams.update({'font.size': 17})
 #----------------------------------------------------------------------------------------------------------------
 # generate dataset for LSTM
 t, y = generate_dataset.synthetic_data()
+#2000条数据，单变量，下面是单纯划分数据集，1600/400
 t_train, y_train, t_test, y_test = generate_dataset.train_test_split(t, y, split = 0.8)
+#
 
 # plot time series 
 plt.figure(figsize = (18, 6))
@@ -54,6 +56,7 @@ s = 5
 
 # generate windowed training/test datasets
 Xtrain, Ytrain= generate_dataset.windowed_dataset(y_train, input_window = iw, output_window = ow, stride = s)
+#数据变成三维的，长度是80/20
 Xtest, Ytest = generate_dataset.windowed_dataset(y_test, input_window = iw, output_window = ow, stride = s)
 
 # plot example of windowed data  
@@ -73,10 +76,12 @@ plt.savefig('plots/windowed_data.png')
 # LSTM encoder-decoder
 
 # convert windowed data from np.array to PyTorch tensor
+#转换为torch数据结构，维度不变，还是三维
 X_train, Y_train, X_test, Y_test = generate_dataset.numpy_to_torch(Xtrain, Ytrain, Xtest, Ytest)
 
 # specify model parameters and train
 model = lstm_encoder_decoder.lstm_seq2seq(input_size = X_train.shape[2], hidden_size = 15)
+#经过模型算出来的是损失值，是一个数组，长度是epochs的长
 loss = model.train_model(X_train, Y_train, n_epochs = 50, target_len = ow, batch_size = 5, training_prediction = 'mixed_teacher_forcing', teacher_forcing_ratio = 0.6, learning_rate = 0.01, dynamic_tf = False)
 
 # plot predictions on train/test data

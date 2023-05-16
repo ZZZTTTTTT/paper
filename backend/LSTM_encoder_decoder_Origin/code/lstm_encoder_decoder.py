@@ -97,6 +97,7 @@ class lstm_decoder(nn.Module):
 
 class lstm_seq2seq(nn.Module):
     ''' train LSTM encoder-decoder and make predictions '''
+    #input_size就是特征数量，这个例子是1
     
     def __init__(self, input_size, hidden_size):
 
@@ -136,7 +137,7 @@ class lstm_seq2seq(nn.Module):
         :                                  reduces the amount of teacher forcing for each epoch
         : return losses:                   array of loss function for each epoch
         '''
-        
+        #这里的训练方法就是混合真实数据和预测作为下一步输入
         # initialize array of losses 
         losses = np.full(n_epochs, np.nan)
 
