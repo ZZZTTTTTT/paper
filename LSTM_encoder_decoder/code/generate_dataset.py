@@ -19,8 +19,8 @@ def synthetic_data(Nt = 2000, tf = 80 * np.pi):
     : return t, y:    time, feature arrays
     '''
     
-    t = np.linspace(0., tf, Nt)
-    y = np.sin(2. * t) + 0.5 * np.cos(t) + np.random.normal(0., 0.2, Nt)
+    t = np.transpose(np.array([np.linspace(0., tf, Nt),np.linspace(0., tf+100, Nt)]))
+    y = np.sin(2. * t[:,0]) + 0.5 * np.cos(t[:,0]) + np.random.normal(0., 0.2, Nt)
 
     return t, y
 
@@ -77,11 +77,13 @@ def windowed_dataset(y, input_window = 5, output_window = 1, stride = 1, num_fea
         for ii in np.arange(num_samples):
             start_x = stride * ii
             end_x = start_x + input_window
-            X[:, ii, ff] = y[start_x:end_x, ff]
+            #暂且先这样改，可能不对
+            X[:, ii, ff] = y[start_x:end_x, 0]
 
             start_y = stride * ii + input_window
-            end_y = start_y + output_window 
-            Y[:, ii, ff] = y[start_y:end_y, ff]
+            end_y = start_y + output_window
+            # 暂且先这样改，可能不对
+            Y[:, ii, ff] = y[start_y:end_y, 0]
 
     return X, Y
 

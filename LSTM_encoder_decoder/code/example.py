@@ -24,10 +24,11 @@ matplotlib.rcParams.update({'font.size': 17})
 t, y = generate_dataset.synthetic_data()
 t_train, y_train, t_test, y_test = generate_dataset.train_test_split(t, y, split = 0.8)
 
-# plot time series 
+# plot time series
+"""
+先注释画图部分
 plt.figure(figsize = (18, 6))
 plt.plot(t, y, color = 'k', linewidth = 2)
-plt.xlim([t[0], t[-1]])
 plt.xlabel('$t$')
 plt.ylabel('$y$')
 plt.title('Synthetic Time Series')
@@ -45,7 +46,7 @@ plt.title('Time Series Split into Train and Test Sets')
 plt.legend(bbox_to_anchor=(1, 1))
 plt.tight_layout
 plt.savefig('plots/train_test_split.png')
-
+"""
 #----------------------------------------------------------------------------------------------------------------
 # window dataset
 
@@ -55,10 +56,12 @@ ow = 20
 s = 5
 
 # generate windowed training/test datasets
-Xtrain, Ytrain= generate_dataset.windowed_dataset(y_train, input_window = iw, output_window = ow, stride = s)
-Xtest, Ytest = generate_dataset.windowed_dataset(y_test, input_window = iw, output_window = ow, stride = s)
+Xtrain, Ytrain= generate_dataset.windowed_dataset(y_train, input_window = iw, output_window = ow, stride = s,num_features=t_train.shape[1])
+Xtest, Ytest = generate_dataset.windowed_dataset(y_test, input_window = iw, output_window = ow, stride = s,num_features=t_train.shape[1])
 
-# plot example of windowed data  
+# plot example of windowed data
+"""
+先注释画图部分
 plt.figure(figsize = (10, 6)) 
 plt.plot(np.arange(0, iw), Xtrain[:, 0, 0], 'k', linewidth = 2.2, label = 'Input')
 plt.plot(np.arange(iw - 1, iw + ow), np.concatenate([[Xtrain[-1, 0, 0]], Ytrain[:, 0, 0]]),
@@ -70,7 +73,7 @@ plt.title('Example of Windowed Training Data')
 plt.legend(bbox_to_anchor=(1.3, 1))
 plt.tight_layout() 
 plt.savefig('plots/windowed_data.png')
-
+"""
 #----------------------------------------------------------------------------------------------------------------
 # LSTM encoder-decoder
 

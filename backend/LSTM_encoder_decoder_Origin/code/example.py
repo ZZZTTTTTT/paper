@@ -22,7 +22,7 @@ matplotlib.rcParams.update({'font.size': 17})
 t, y = generate_dataset.synthetic_data()
 #2000条数据，单变量，下面是单纯划分数据集，1600/400
 t_train, y_train, t_test, y_test = generate_dataset.train_test_split(t, y, split = 0.8)
-#
+#t_train除了画图似乎没有用到
 
 # plot time series 
 plt.figure(figsize = (18, 6))
