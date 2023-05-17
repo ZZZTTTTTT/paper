@@ -146,6 +146,8 @@ class lstm_seq2seq(nn.Module):
         # calculate number of batch iterations
         n_batches = int(input_tensor.shape[1] / batch_size)
 
+        val_losses = []
+
         with trange(n_epochs) as tr:
             for it in tr:
                 
@@ -154,11 +156,12 @@ class lstm_seq2seq(nn.Module):
                 batch_loss_no_tf = 0.
                 num_tf = 0
                 num_no_tf = 0
-
+                train_input, val_input = torch.split(input_tensor, [0.7, 0.3], dim=1)
+                train_target, val_target = torch.split(target_tensor, [0.7, 0.3], dim=1)
                 for b in range(n_batches):
                     # select data 
-                    input_batch = input_tensor[:, b: b + batch_size, :]
-                    target_batch = target_tensor[:, b: b + batch_size, :]
+                    input_batch = train_input[:, b: b + batch_size, :]
+                    target_batch = train_target[:, b: b + batch_size, :]
 
                     # outputs tensor
                     outputs = torch.zeros(target_len, batch_size, input_batch.shape[2])
@@ -223,6 +226,32 @@ class lstm_seq2seq(nn.Module):
                 # loss for epoch 
                 batch_loss /= n_batches 
                 losses[it] = batch_loss
+
+                #计算验证集loss
+                val_loss = 0.
+                self.eval()
+                with torch.no_grad():
+                    for b in range(val_input.shape[1] // batch_size):
+                        val_input_batch = val_input[:, b:b + batch_size, :]
+                        val_target_batch = val_target[:, b:b + batch_size, :]
+
+                        val_outputs = torch.zeros(target_len, batch_size, val_input_batch.shape[2])
+
+                        encoder_hidden = self.encoder.init_hidden(batch_size)
+                        encoder_output, encoder_hidden = self.encoder(val_input_batch)
+
+                        decoder_input = val_input_batch[-1, :, :]
+                        decoder_hidden = encoder_hidden
+
+                        for t in range(target_len):
+                            decoder_output, decoder_hidden = self.decoder(decoder_input, decoder_hidden)
+                            val_outputs[t] = decoder_output
+                            decoder_input = decoder_output
+
+                        val_loss += criterion(val_outputs, val_target_batch)
+                val_loss /= len(val_input_batch)
+                val_losses.append(val_loss)
+                val_losses[it] = val_loss
 
                 # dynamic teacher forcing
                 if dynamic_tf and teacher_forcing_ratio > 0:
