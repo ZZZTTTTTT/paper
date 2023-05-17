@@ -34,10 +34,10 @@ def plot_train_test_results(lstm_model, Xtrain, Ytrain, Xtest, Ytest, num_rows =
       X_train_plt = Xtrain[:, ii, :]
       Y_train_pred = lstm_model.predict(torch.from_numpy(X_train_plt).type(torch.Tensor), target_len = ow)
 
-      ax[ii, 0].plot(np.arange(0, iw), Xtrain[:, ii, 0], 'k', linewidth = 2, label = 'Input')
-      ax[ii, 0].plot(np.arange(iw - 1, iw + ow), np.concatenate([[Xtrain[-1, ii, 0]], Ytrain[:, ii, 0]]),
+      ax[ii, 0].plot(np.arange(0, iw), Xtrain[:, ii, -1], 'k', linewidth = 2, label = 'Input')
+      ax[ii, 0].plot(np.arange(iw - 1, iw + ow), np.concatenate([[Xtrain[-1, ii, -1]], Ytrain[:, ii, -1]]),
                      color = (0.2, 0.42, 0.72), linewidth = 2, label = 'Target')
-      ax[ii, 0].plot(np.arange(iw - 1, iw + ow),  np.concatenate([[Xtrain[-1, ii, 0]], Y_train_pred[:, 0]]),
+      ax[ii, 0].plot(np.arange(iw - 1, iw + ow),  np.concatenate([[Xtrain[-1, ii, -1]], Y_train_pred[:, -1]]),
                      color = (0.76, 0.01, 0.01), linewidth = 2, label = 'Prediction')
       ax[ii, 0].set_xlim([0, iw + ow - 1])
       ax[ii, 0].set_xlabel('$t$')
@@ -46,10 +46,10 @@ def plot_train_test_results(lstm_model, Xtrain, Ytrain, Xtest, Ytest, num_rows =
       # test set
       X_test_plt = Xtest[:, ii, :]
       Y_test_pred = lstm_model.predict(torch.from_numpy(X_test_plt).type(torch.Tensor), target_len = ow)
-      ax[ii, 1].plot(np.arange(0, iw), Xtest[:, ii, 0], 'k', linewidth = 2, label = 'Input')
-      ax[ii, 1].plot(np.arange(iw - 1, iw + ow), np.concatenate([[Xtest[-1, ii, 0]], Ytest[:, ii, 0]]),
+      ax[ii, 1].plot(np.arange(0, iw), Xtest[:, ii, -1], 'k', linewidth = 2, label = 'Input')
+      ax[ii, 1].plot(np.arange(iw - 1, iw + ow), np.concatenate([[Xtest[-1, ii, -1]], Ytest[:, ii, -1]]),
                      color = (0.2, 0.42, 0.72), linewidth = 2, label = 'Target')
-      ax[ii, 1].plot(np.arange(iw - 1, iw + ow), np.concatenate([[Xtest[-1, ii, 0]], Y_test_pred[:, 0]]),
+      ax[ii, 1].plot(np.arange(iw - 1, iw + ow), np.concatenate([[Xtest[-1, ii, -1]], Y_test_pred[:, -1]]),
                      color = (0.76, 0.01, 0.01), linewidth = 2, label = 'Prediction')
       ax[ii, 1].set_xlim([0, iw + ow - 1])
       ax[ii, 1].set_xlabel('$t$')

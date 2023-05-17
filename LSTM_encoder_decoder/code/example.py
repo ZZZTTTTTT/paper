@@ -21,8 +21,8 @@ matplotlib.rcParams.update({'font.size': 17})
 
 #----------------------------------------------------------------------------------------------------------------
 # generate dataset for LSTM
-t, y = generate_dataset.synthetic_data()
-t_train, y_train, t_test, y_test = generate_dataset.train_test_split(t, y, split = 0.8)
+data = generate_dataset.synthetic_data()
+t_train, y_train, t_test, y_test = generate_dataset.train_test_split(data, data[:,-1], split = 0.8)
 
 # plot time series
 """
@@ -56,8 +56,8 @@ ow = 20
 s = 5
 
 # generate windowed training/test datasets
-Xtrain, Ytrain= generate_dataset.windowed_dataset(y_train, input_window = iw, output_window = ow, stride = s,num_features=t_train.shape[1])
-Xtest, Ytest = generate_dataset.windowed_dataset(y_test, input_window = iw, output_window = ow, stride = s,num_features=t_train.shape[1])
+Xtrain, Ytrain= generate_dataset.windowed_dataset(t_train, input_window = iw, output_window = ow, stride = s,num_features=t_train.shape[1])
+Xtest, Ytest = generate_dataset.windowed_dataset(t_test, input_window = iw, output_window = ow, stride = s,num_features=t_train.shape[1])
 
 # plot example of windowed data
 """
@@ -81,9 +81,11 @@ plt.savefig('plots/windowed_data.png')
 X_train, Y_train, X_test, Y_test = generate_dataset.numpy_to_torch(Xtrain, Ytrain, Xtest, Ytest)
 
 # specify model parameters and train
-model = lstm_encoder_decoder.lstm_seq2seq(input_size = X_train.shape[2], hidden_size = 15)
-loss = model.train_model(X_train, Y_train, n_epochs = 50, target_len = ow, batch_size = 5, training_prediction = 'mixed_teacher_forcing', teacher_forcing_ratio = 0.6, learning_rate = 0.01, dynamic_tf = False)
+model = lstm_encoder_decoder.lstm_seq2seq(input_size = X_train.shape[2], hidden_size = 30)
+loss = model.train_model(X_train, Y_train, n_epochs = 100, target_len = ow, batch_size = 5, training_prediction = 'mixed_teacher_forcing', teacher_forcing_ratio = 0.6, learning_rate = 0.001, dynamic_tf = False)
 
+plt.plot(loss,label="loss")
+plt.savefig('plots/loss.png')
 # plot predictions on train/test data
 plotting.plot_train_test_results(model, Xtrain, Ytrain, Xtest, Ytest)
 

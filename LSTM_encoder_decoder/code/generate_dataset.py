@@ -18,11 +18,10 @@ def synthetic_data(Nt = 2000, tf = 80 * np.pi):
     : param tf:       final time
     : return t, y:    time, feature arrays
     '''
-    
-    t = np.transpose(np.array([np.linspace(0., tf, Nt),np.linspace(0., tf+100, Nt)]))
-    y = np.sin(2. * t[:,0]) + 0.5 * np.cos(t[:,0]) + np.random.normal(0., 0.2, Nt)
+    y = np.sin(2. * np.random.randn()) + 0.5 * np.cos(np.random.randn()) + np.random.normal(0., 0.2, Nt)
+    t = np.transpose(np.array([np.linspace(0., tf, Nt),np.linspace(0., tf+100, Nt),y]))
 
-    return t, y
+    return t
 
 def train_test_split(t, y, split = 0.8):
 
@@ -77,13 +76,11 @@ def windowed_dataset(y, input_window = 5, output_window = 1, stride = 1, num_fea
         for ii in np.arange(num_samples):
             start_x = stride * ii
             end_x = start_x + input_window
-            #暂且先这样改，可能不对
-            X[:, ii, ff] = y[start_x:end_x, 0]
+            X[:, ii, ff] = y[start_x:end_x, ff]
 
             start_y = stride * ii + input_window
             end_y = start_y + output_window
-            # 暂且先这样改，可能不对
-            Y[:, ii, ff] = y[start_y:end_y, 0]
+            Y[:, ii, ff] = y[start_y:end_y, ff]
 
     return X, Y
 
