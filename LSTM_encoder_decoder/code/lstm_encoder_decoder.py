@@ -146,22 +146,29 @@ class lstm_seq2seq(nn.Module):
         # calculate number of batch iterations
         n_batches = int(input_tensor.shape[1] / batch_size)
 
-        val_losses = []
+        n_train = int(input_tensor.shape[0] * 0.7)
+        n_val = input_tensor.shape[0] - n_train
+        train_input, val_input = torch.split(input_tensor, [n_train, n_val], dim=0)
+        train_target, val_target = torch.split(target_tensor, [int(target_tensor.shape[0] * 0.7), target_tensor.shape[0] - int(target_tensor.shape[0] * 0.7)], dim=0)
+
+        val_losses = np.full(n_epochs, np.nan)
 
         with trange(n_epochs) as tr:
             for it in tr:
                 
                 batch_loss = 0.
+                val_batch_loss = 0.
                 batch_loss_tf = 0.
                 batch_loss_no_tf = 0.
                 num_tf = 0
                 num_no_tf = 0
-                train_input, val_input = torch.split(input_tensor, [0.7, 0.3], dim=1)
-                train_target, val_target = torch.split(target_tensor, [0.7, 0.3], dim=1)
+                #training loss
                 for b in range(n_batches):
                     # select data 
                     input_batch = train_input[:, b: b + batch_size, :]
                     target_batch = train_target[:, b: b + batch_size, :]
+
+                    target_len=target_batch.shape[0]
 
                     # outputs tensor
                     outputs = torch.zeros(target_len, batch_size, input_batch.shape[2])
@@ -231,9 +238,11 @@ class lstm_seq2seq(nn.Module):
                 val_loss = 0.
                 self.eval()
                 with torch.no_grad():
-                    for b in range(val_input.shape[1] // batch_size):
+                    for b in range(n_batches):
                         val_input_batch = val_input[:, b:b + batch_size, :]
                         val_target_batch = val_target[:, b:b + batch_size, :]
+
+                        target_len = val_target_batch.shape[0]
 
                         val_outputs = torch.zeros(target_len, batch_size, val_input_batch.shape[2])
 
@@ -249,18 +258,20 @@ class lstm_seq2seq(nn.Module):
                             decoder_input = decoder_output
 
                         val_loss += criterion(val_outputs, val_target_batch)
-                val_loss /= len(val_input_batch)
-                val_losses.append(val_loss)
-                val_losses[it] = val_loss
+                        val_batch_loss+=val_loss.item()
+                    # loss for epoch
+                    val_batch_loss/=n_batches
+                    val_losses[it] = val_batch_loss
 
                 # dynamic teacher forcing
                 if dynamic_tf and teacher_forcing_ratio > 0:
                     teacher_forcing_ratio = teacher_forcing_ratio - 0.02 
 
                 # progress bar 
-                tr.set_postfix(loss="{0:.3f}".format(batch_loss))
-                    
-        return losses
+                tr.set_postfix({"loss" : "{0:.3f}".format(batch_loss),"val_batch_loss":"{0:.3f}".format(val_batch_loss)})
+
+
+        return losses,val_losses
 
     def predict(self, input_tensor, target_len):
         

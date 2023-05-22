@@ -3,6 +3,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import torch
+import  torch.nn as nn
 
 def plot_train_test_results(lstm_model, Xtrain, Ytrain, Xtest, Ytest, num_rows = 4):
   '''
@@ -27,6 +28,8 @@ def plot_train_test_results(lstm_model, Xtrain, Ytrain, Xtest, Ytest, num_rows =
   num_plots = num_rows * num_cols
 
   fig, ax = plt.subplots(num_rows, num_cols, figsize = (13, 15))
+
+  mse_mean = nn.MSELoss(reduction='mean')
   
   # plot training/test predictions
   for ii in range(num_rows):
@@ -39,6 +42,7 @@ def plot_train_test_results(lstm_model, Xtrain, Ytrain, Xtest, Ytest, num_rows =
                      color = (0.2, 0.42, 0.72), linewidth = 2, label = 'Target')
       ax[ii, 0].plot(np.arange(iw - 1, iw + ow),  np.concatenate([[Xtrain[-1, ii, -1]], Y_train_pred[:, -1]]),
                      color = (0.76, 0.01, 0.01), linewidth = 2, label = 'Prediction')
+      # print('train set mse loss',mse_mean(Ytrain[:, ii, -1],Y_train_pred[:, -1]))
       ax[ii, 0].set_xlim([0, iw + ow - 1])
       ax[ii, 0].set_xlabel('$t$')
       ax[ii, 0].set_ylabel('$y$')
@@ -51,6 +55,7 @@ def plot_train_test_results(lstm_model, Xtrain, Ytrain, Xtest, Ytest, num_rows =
                      color = (0.2, 0.42, 0.72), linewidth = 2, label = 'Target')
       ax[ii, 1].plot(np.arange(iw - 1, iw + ow), np.concatenate([[Xtest[-1, ii, -1]], Y_test_pred[:, -1]]),
                      color = (0.76, 0.01, 0.01), linewidth = 2, label = 'Prediction')
+      # print('test set mse loss', mse_mean(Ytest[:, ii, -1], Y_test_pred[:, -1]))
       ax[ii, 1].set_xlim([0, iw + ow - 1])
       ax[ii, 1].set_xlabel('$t$')
       ax[ii, 1].set_ylabel('$y$')
