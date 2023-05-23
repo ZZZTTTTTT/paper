@@ -255,7 +255,7 @@ class lstm_seq2seq(nn.Module):
                         for t in range(target_len):
                             decoder_output, decoder_hidden = self.decoder(decoder_input, decoder_hidden)
                             val_outputs[t] = decoder_output
-                            decoder_input = decoder_output
+                            decoder_input = val_target_batch[t, :, :]
 
                         val_loss += criterion(val_outputs, val_target_batch)
                         val_batch_loss+=val_loss.item()

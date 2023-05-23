@@ -19,9 +19,13 @@ import plotting
 
 matplotlib.rcParams.update({'font.size': 17})
 
-#----------------------------------------------------------------------------------------------------------------
+
 # generate dataset for LSTM
-data = generate_dataset.synthetic_data()
+# data = generate_dataset.synthetic_data()
+#数据类型ndarray
+data = generate_dataset.load_data()
+#归一化
+data=generate_dataset.maxmin_scaler(data)
 t_train, y_train, t_test, y_test = generate_dataset.train_test_split(data, data[:,-1], split = 0.8)
 
 # plot time series
@@ -51,8 +55,8 @@ plt.savefig('plots/train_test_split.png')
 # window dataset
 
 # set size of input/output windows 
-iw = 80 
-ow = 20 
+iw = 320
+ow = 80
 s = 5
 
 # generate windowed training/test datasets
@@ -81,8 +85,8 @@ plt.savefig('plots/windowed_data.png')
 X_train, Y_train, X_test, Y_test = generate_dataset.numpy_to_torch(Xtrain, Ytrain, Xtest, Ytest)
 
 # specify model parameters and train
-model = lstm_encoder_decoder.lstm_seq2seq(input_size = X_train.shape[2], hidden_size = 50)
-loss,val_losses = model.train_model(X_train, Y_train, n_epochs = 125, target_len = ow, batch_size = 20, training_prediction = 'mixed_teacher_forcing', teacher_forcing_ratio = 0.6, learning_rate = 0.0005, dynamic_tf = False)
+model = lstm_encoder_decoder.lstm_seq2seq(input_size = X_train.shape[2], hidden_size = 10)
+loss,val_losses = model.train_model(X_train, Y_train, n_epochs = 10, target_len = ow, batch_size = 10, training_prediction = 'mixed_teacher_forcing', teacher_forcing_ratio = 0.6, learning_rate = 0.01, dynamic_tf = False)
 
 plt.plot(loss,label="loss")
 plt.plot(val_losses,label="val_losses")

@@ -4,6 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import torch
 import  torch.nn as nn
+import generate_dataset
+
 
 def plot_train_test_results(lstm_model, Xtrain, Ytrain, Xtest, Ytest, num_rows = 4):
   '''
@@ -36,6 +38,7 @@ def plot_train_test_results(lstm_model, Xtrain, Ytrain, Xtest, Ytest, num_rows =
       # train set
       X_train_plt = Xtrain[:, ii, :]
       Y_train_pred = lstm_model.predict(torch.from_numpy(X_train_plt).type(torch.Tensor), target_len = ow)
+      # Y_train_pred=generate_dataset.inverse_transform(Y_train_pred)
 
       ax[ii, 0].plot(np.arange(0, iw), Xtrain[:, ii, -1], 'k', linewidth = 2, label = 'Input')
       ax[ii, 0].plot(np.arange(iw - 1, iw + ow), np.concatenate([[Xtrain[-1, ii, -1]], Ytrain[:, ii, -1]]),
@@ -50,6 +53,8 @@ def plot_train_test_results(lstm_model, Xtrain, Ytrain, Xtest, Ytest, num_rows =
       # test set
       X_test_plt = Xtest[:, ii, :]
       Y_test_pred = lstm_model.predict(torch.from_numpy(X_test_plt).type(torch.Tensor), target_len = ow)
+      # Y_test_pred=generate_dataset.inverse_transform(Y_test_pred)
+
       ax[ii, 1].plot(np.arange(0, iw), Xtest[:, ii, -1], 'k', linewidth = 2, label = 'Input')
       ax[ii, 1].plot(np.arange(iw - 1, iw + ow), np.concatenate([[Xtest[-1, ii, -1]], Ytest[:, ii, -1]]),
                      color = (0.2, 0.42, 0.72), linewidth = 2, label = 'Target')

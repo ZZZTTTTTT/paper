@@ -9,6 +9,9 @@ We will consider a noisy sinusoidal curve
 
 import numpy as np
 import torch
+from pandas import read_csv
+from sklearn.preprocessing import MinMaxScaler
+
 
 def synthetic_data(Nt = 2000, tf = 80 * np.pi):
     
@@ -105,3 +108,27 @@ def numpy_to_torch(Xtrain, Ytrain, Xtest, Ytest):
     Y_test_torch = torch.from_numpy(Ytest).type(torch.Tensor)
     
     return X_train_torch, Y_train_torch, X_test_torch, Y_test_torch
+
+
+def load_data():
+    # load dataset
+    dataset = read_csv('../../data_processing/result.csv', header=0, index_col=0,encoding="ANSI")
+    # dataset = read_csv('single.csv', header=0, index_col=0,encoding="ANSI")
+    # dataset=dataset.values
+    return dataset
+def maxmin_scaler(dataset):
+
+    #处理缺失值
+    dataset=dataset.fillna(dataset.mean())
+    # print(dataset.isnull().sum())
+    values = dataset.values
+    values = values.astype('float32')
+    # 标准化/放缩 特征值在（0,1）之间
+    scaler = MinMaxScaler(feature_range=(0, 1))
+    scaled = scaler.fit_transform(values)
+    return scaled
+def inverse_transform(dataset):
+
+    scaler = MinMaxScaler(feature_range=(0, 1))
+    inversed = scaler.inverse_transform(dataset)
+    return inversed
