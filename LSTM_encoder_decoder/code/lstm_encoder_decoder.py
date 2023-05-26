@@ -174,12 +174,15 @@ class lstm_seq2seq(nn.Module):
                     outputs = torch.zeros(target_len, batch_size, input_batch.shape[2])
 
                     # initialize hidden state
+
                     encoder_hidden = self.encoder.init_hidden(batch_size)
 
                     # zero the gradient
                     optimizer.zero_grad()
 
                     # encoder outputs
+
+                    # encoder_output, encoder_hidden = self.encoder(nn.Dropout(0.7)(input_batch))
                     encoder_output, encoder_hidden = self.encoder(input_batch)
 
                     # decoder with teacher forcing
