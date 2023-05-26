@@ -162,6 +162,9 @@ class lstm_seq2seq(nn.Module):
                 batch_loss_no_tf = 0.
                 num_tf = 0
                 num_no_tf = 0
+                #动态衰减teacher_forcing_ratio
+
+
                 #training loss
                 for b in range(n_batches):
                     # select data 

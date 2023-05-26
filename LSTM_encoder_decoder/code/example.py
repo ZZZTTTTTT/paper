@@ -55,8 +55,8 @@ plt.savefig('plots/train_test_split.png')
 # window dataset
 
 # set size of input/output windows 
-iw = 320
-ow = 80
+iw = 50
+ow = 15
 s = 5
 
 # generate windowed training/test datasets
@@ -85,8 +85,8 @@ plt.savefig('plots/windowed_data.png')
 X_train, Y_train, X_test, Y_test = generate_dataset.numpy_to_torch(Xtrain, Ytrain, Xtest, Ytest)
 
 # specify model parameters and train
-model = lstm_encoder_decoder.lstm_seq2seq(input_size = X_train.shape[2], hidden_size = 128)
-loss,val_losses = model.train_model(X_train, Y_train, n_epochs = 40, target_len = ow, batch_size = 128, training_prediction = 'mixed_teacher_forcing', teacher_forcing_ratio = 0.6, learning_rate = 0.005, dynamic_tf = False)
+model = lstm_encoder_decoder.lstm_seq2seq(input_size = X_train.shape[2], hidden_size = 256)
+loss,val_losses = model.train_model(X_train, Y_train, n_epochs = 150, target_len = ow, batch_size = 512, training_prediction = 'mixed_teacher_forcing', teacher_forcing_ratio = 0.6, learning_rate = 0.0005, dynamic_tf = False)
 
 plt.plot(loss,label="loss")
 plt.plot(val_losses,label="val_losses")
