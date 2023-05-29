@@ -33,6 +33,7 @@ class lstm_encoder(nn.Module):
         self.lstm = nn.LSTM(input_size = input_size, hidden_size = hidden_size,
                             num_layers = num_layers)
 
+        self.apply(self._init_weights)
     def forward(self, x_input):
         
         '''
@@ -57,6 +58,11 @@ class lstm_encoder(nn.Module):
         return (torch.zeros(self.num_layers, batch_size, self.hidden_size),
                 torch.zeros(self.num_layers, batch_size, self.hidden_size))
 
+    def _init_weights(self, module):
+        if isinstance(module, nn.Linear):
+            module.weight.data.normal_(mean=0.0, std=1.0)
+            if module.bias is not None:
+                module.bias.data.zero_()
 
 class lstm_decoder(nn.Module):
     ''' Decodes hidden state output by encoder '''
@@ -110,8 +116,8 @@ class lstm_seq2seq(nn.Module):
         self.input_size = input_size
         self.hidden_size = hidden_size
 
-        self.encoder = lstm_encoder(input_size = input_size, hidden_size = hidden_size)
-        self.decoder = lstm_decoder(input_size = input_size, hidden_size = hidden_size)
+        self.encoder = lstm_encoder(input_size = input_size, hidden_size = hidden_size,num_layers=2)
+        self.decoder = lstm_decoder(input_size = input_size, hidden_size = hidden_size,num_layers=2)
 
 
     def train_model(self, input_tensor, target_tensor, n_epochs, target_len, batch_size, training_prediction = 'recursive', teacher_forcing_ratio = 0.5, learning_rate = 0.01, dynamic_tf = False):
@@ -141,7 +147,7 @@ class lstm_seq2seq(nn.Module):
         losses = np.full(n_epochs, np.nan)
 
         optimizer = optim.Adam(self.parameters(), lr = learning_rate)
-        criterion = nn.MSELoss()
+        criterion = nn.L1Loss()
 
         # calculate number of batch iterations
         n_batches = int(input_tensor.shape[1] / batch_size)
