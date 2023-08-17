@@ -18,7 +18,8 @@ import pandas as pd
 import abnormal_detect
 
 from matplotlib.pyplot import MultipleLocator
-
+from keras.layers import RepeatVector
+from keras.layers import TimeDistributed
 
 
 
@@ -38,7 +39,7 @@ class LSTM_Demo:
         self.model=None
         self.scaler=None
         self.history=None
-        self.n_seq=30
+        self.n_seq=3
         self.n_batch=50
     def load_data(self):
         # load dataset
@@ -96,10 +97,10 @@ class LSTM_Demo:
         agg = concat(cols, axis=1)
         # 给合并后的数据添加列名
         agg.columns = names
-        print(agg)
         # 删除NaN值列
         if dropnan:
             agg.dropna(inplace=True)
+        print(agg)
         return agg
     def get_splited_data(self):
         dataset=self.load_data()
@@ -140,6 +141,34 @@ class LSTM_Demo:
         #多步预测
         self.mutil_step_predict(test_X,test_y)
 
+
+    def do_ED_train(self):
+        train_X, test_X, test_y, train_y = self.get_splited_data()
+        # reshape output into [samples, timesteps, features]
+        train_y = train_y.reshape((train_y.shape[0], train_y.shape[1], 1))
+        test_y = test_y.reshape((test_y.shape[0], test_y.shape[1], 1))
+
+        # 设计网络
+        self.model = Sequential()
+        self.model.add(
+            LSTM(120, activation='relu', input_shape=(train_X.shape[1], train_X.shape[2]),
+                 kernel_initializer='glorot_uniform'))
+        # self.model.add(Dropout(0.2))
+        self.model.add(RepeatVector(train_y.shape[1]))
+        self.model.add(LSTM(120, activation='relu', return_sequences=True))
+        self.model.add(TimeDistributed(Dense(40, activation='relu')))
+        self.model.add(TimeDistributed(Dense(1)))
+        self.model.compile(loss='mae', optimizer=Adam(learning_rate=0.001))
+        # fit network
+        self.history = self.model.fit(train_X, train_y, epochs=50, batch_size=100, verbose=1,
+                                      validation_data=(test_X, test_y), shuffle=False)
+        print(self.history.history)
+        print(self.history.history['loss'])
+        print(self.history.history['val_loss'])
+
+        #多步预测
+        self.mutil_step_predict(test_X,test_y)
+
     def do_predict(self):
         train_X, test_X, test_y, train_y = self.get_splited_data()
 
@@ -164,6 +193,8 @@ class LSTM_Demo:
         # 计算RMSE误差值
         rmse = sqrt(mean_squared_error(inv_y, inv_yhat))
         self.plot(inv_y,inv_yhat)
+        print(inv_y)
+        print(inv_yhat)
         print('Test RMSE: %.3f' % rmse)
 
     # LSTM 单步预测
@@ -267,5 +298,7 @@ class LSTM_Demo:
 
 if __name__ == "__main__":
     demo = LSTM_Demo()     #加载类
-    demo.do_train()
+    # demo.do_train()
+    demo.do_ED_train()
+    # demo.do_TCN_train()
     # demo.do_predict()
