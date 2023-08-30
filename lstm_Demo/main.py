@@ -16,6 +16,7 @@ from sklearn.preprocessing import LabelEncoder
 from keras.regularizers import l2
 import pandas as pd
 import abnormal_detect
+import math
 
 from matplotlib.pyplot import MultipleLocator
 from keras.layers import RepeatVector
@@ -53,16 +54,21 @@ class LSTM_Demo:
         # split into train and test sets
         values = reframed.values
 
-        n_train_hours = 13460
+        # n_train_hours = 13460
+        n_train_hours =math.floor(values.shape[0] * 0.6)
+        n_test_hours =math.floor(values.shape[0] * 0.8)
+
         train = values[:n_train_hours, :]
-        test = values[n_train_hours:, :]
+        test = values[n_train_hours:n_test_hours, :]
+        val = values[n_test_hours:, :]
 
         # split into input and outputs
         n_obs = self.n_seq * self.n_features
-        # 有60=(12*(3+2))列数据
+
         train_X, train_y = train[:, :-n_obs], train[:,-n_obs :]
         test_X, test_y = test[:, :-n_obs], test[:, -n_obs:]
-        return train_X,test_X, test_y, train_y
+        val_X, val_y = val[:, :-n_obs], val[:, -n_obs:]
+        return train_X,test_X, test_y, train_y,val_X, val_y
     def maxmin_scaler(self,dataset):
 
         #处理缺失值
@@ -116,15 +122,16 @@ class LSTM_Demo:
 
         # 构造一个3->1的监督学习型数据
         reframed = self.series_to_supervised(scaled, self.n_hours, self.n_seq)
-        train_X,test_X, test_y, train_y=self.split_train_test(reframed)
+        train_X,test_X, test_y, train_y,val_X, val_y=self.split_train_test(reframed)
         # 将数据转换为3D输入，timesteps=3，3条数据预测1条 [samples, timesteps, features]
         train_X = train_X.reshape((train_X.shape[0], self.n_hours, self.n_features))
         test_X = test_X.reshape((test_X.shape[0], self.n_hours, self.n_features))
-        print(train_X.shape, train_y.shape, test_X.shape, test_y.shape)
-        return train_X,test_X, test_y, train_y
+        val_X = val_X.reshape((val_X.shape[0], self.n_hours, self.n_features))
+        print(train_X.shape, train_y.shape, test_X.shape, test_y.shape,val_X.shape, val_y.shape)
+        return train_X,test_X, test_y, train_y,val_X, val_y
 
     def do_train(self):
-        train_X, test_X, test_y, train_y = self.get_splited_data()
+        train_X, test_X, test_y, train_y,val_X, val_y = self.get_splited_data()
 
 
         # 设计网络
@@ -135,7 +142,7 @@ class LSTM_Demo:
         self.model.add(Dense(train_y.shape[1]))
         self.model.compile(loss='mae', optimizer=Adam(learning_rate=1e-3))
         # 拟合网络
-        self.history = self.model.fit(train_X, train_y, epochs=125, batch_size=self.n_batch, validation_data=(test_X, test_y), verbose=1,
+        self.history = self.model.fit(train_X, train_y, epochs=125, batch_size=self.n_batch, validation_data=(val_X, val_y), verbose=1,
                             shuffle=False)
 
         #多步预测
@@ -143,11 +150,12 @@ class LSTM_Demo:
 
 
     def do_ED_train(self):
-        train_X, test_X, test_y, train_y = self.get_splited_data()
+        train_X, test_X, test_y, train_y,val_X, val_y = self.get_splited_data()
+
         # reshape output into [samples, timesteps, features]
         train_y = train_y.reshape((train_y.shape[0], train_y.shape[1], 1))
         test_y = test_y.reshape((test_y.shape[0], test_y.shape[1], 1))
-
+        val_y = val_y.reshape((val_y.shape[0], val_y.shape[1], 1))
         # 设计网络
         self.model = Sequential()
         self.model.add(
@@ -161,7 +169,7 @@ class LSTM_Demo:
         self.model.compile(loss='mae', optimizer=Adam(learning_rate=0.001))
         # fit network
         self.history = self.model.fit(train_X, train_y, epochs=50, batch_size=100, verbose=1,
-                                      validation_data=(test_X, test_y), shuffle=False)
+                                      validation_data=(val_X, val_y), shuffle=False)
         print(self.history.history)
         print(self.history.history['loss'])
         print(self.history.history['val_loss'])
@@ -170,7 +178,7 @@ class LSTM_Demo:
         self.mutil_step_predict(test_X,test_y)
 
     def do_predict(self):
-        train_X, test_X, test_y, train_y = self.get_splited_data()
+        train_X, test_X, test_y, train_y,val_X, val_y = self.get_splited_data()
 
         # 执行预测
         model=self.model
