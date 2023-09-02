@@ -153,7 +153,7 @@ class LSTM_Demo:
         self.model.add(
             LSTM(120, activation='relu', input_shape=(train_X.shape[1], train_X.shape[2]),
                  kernel_initializer='glorot_uniform'))
-        # self.model.add(Dropout(0.2))
+        self.model.add(Dropout(0.2))
         self.model.add(RepeatVector(train_y.shape[1]))
         self.model.add(LSTM(120, activation='relu', return_sequences=True))
         self.model.add(TimeDistributed(Dense(40, activation='relu')))
