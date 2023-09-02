@@ -129,7 +129,7 @@ if __name__ == '__main__':
     t = np.linspace(0.0, 1.0, int(Fs * T))  # 时间轴
     a = 0.5 * np.sin(2.0 * np.pi * 300 * t)  # 正弦波信号
 
-    print('正弦波信号',a.shape)
+    print('正弦波信号',a)
 
     # 创建一个Fea_Extra对象
     fea_extra = Fea_Extra(a, Fs)
