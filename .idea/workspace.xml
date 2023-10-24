@@ -20,7 +20,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2182cf3e-fe07-4283-a6e0-28374fca6bbd" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/feature/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lstm_Demo/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/lstm_Demo/main.py" afterDir="false" />
     </list>
@@ -32,7 +31,7 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="JupyterTrust" id="582fba38-fc18-4a2c-a786-11fd122ce078" />
+  <component name="JupyterTrust" id="bdef4af9-a8dc-40f7-a8f5-92d18429edb7" />
   <component name="ProjectId" id="2PMhqGXpAK7XzuCbydbDv7K7CI6" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -80,6 +79,7 @@
       <option name="presentableId" value="Default" />
       <updated>1683273050680</updated>
       <workItem from="1683273055048" duration="23000" />
+      <workItem from="1693789616886" duration="12985000" />
     </task>
     <servers />
   </component>
@@ -99,26 +99,26 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1222" height="128" key="GridCell.Tab.0.bottom" timestamp="1693655512118">
+    <state width="1222" height="141" key="GridCell.Tab.0.bottom" timestamp="1693919075118">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1222" height="128" key="GridCell.Tab.0.bottom/0.0.1280.689/-1026.-2160.2560.1409@0.0.1280.689" timestamp="1693655512118" />
-    <state width="1222" height="128" key="GridCell.Tab.0.center" timestamp="1693655512118">
+    <state width="1222" height="141" key="GridCell.Tab.0.bottom/0.0.1280.689/-1026.-2160.2560.1409@0.0.1280.689" timestamp="1693919075118" />
+    <state width="1222" height="141" key="GridCell.Tab.0.center" timestamp="1693919075117">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1222" height="128" key="GridCell.Tab.0.center/0.0.1280.689/-1026.-2160.2560.1409@0.0.1280.689" timestamp="1693655512118" />
-    <state width="1222" height="128" key="GridCell.Tab.0.left" timestamp="1693655512117">
+    <state width="1222" height="141" key="GridCell.Tab.0.center/0.0.1280.689/-1026.-2160.2560.1409@0.0.1280.689" timestamp="1693919075117" />
+    <state width="1222" height="141" key="GridCell.Tab.0.left" timestamp="1693919075117">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1222" height="128" key="GridCell.Tab.0.left/0.0.1280.689/-1026.-2160.2560.1409@0.0.1280.689" timestamp="1693655512117" />
-    <state width="1222" height="128" key="GridCell.Tab.0.right" timestamp="1693655512118">
+    <state width="1222" height="141" key="GridCell.Tab.0.left/0.0.1280.689/-1026.-2160.2560.1409@0.0.1280.689" timestamp="1693919075117" />
+    <state width="1222" height="141" key="GridCell.Tab.0.right" timestamp="1693919075118">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1222" height="128" key="GridCell.Tab.0.right/0.0.1280.689/-1026.-2160.2560.1409@0.0.1280.689" timestamp="1693655512118" />
+    <state width="1222" height="141" key="GridCell.Tab.0.right/0.0.1280.689/-1026.-2160.2560.1409@0.0.1280.689" timestamp="1693919075118" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/model$data.coverage" NAME="feature_extract Coverage Results" MODIFIED="1693647404277" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/feature" />
     <SUITE FILE_PATH="coverage/model$signal.coverage" NAME="signal Coverage Results" MODIFIED="1693643214376" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/feature" />
-    <SUITE FILE_PATH="coverage/model$main.coverage" NAME="main Coverage Results" MODIFIED="1693655512100" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/lstm_Demo" />
+    <SUITE FILE_PATH="coverage/model$main.coverage" NAME="main Coverage Results" MODIFIED="1693893094387" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/lstm_Demo" />
   </component>
 </project>
