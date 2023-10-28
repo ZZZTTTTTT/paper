@@ -1,3 +1,4 @@
+import math
 from math import sqrt
 from numpy import concatenate
 from matplotlib import pyplot
@@ -69,7 +70,8 @@ class LSTM_Demo:
         # split into train and test sets
         values = reframed.values
 
-        n_train_hours = 13460
+        # n_train_hours = 13460
+        n_train_hours = math.floor(values.shape[0]*0.8)
         train = values[:n_train_hours, :]
         test = values[n_train_hours:, :]
 
@@ -178,10 +180,11 @@ class LSTM_Demo:
         # self.model.add(ResidualBlock(LSTM(160, return_sequences=True)))
         self.model.add(LSTM(220, activation='relu', return_sequences=True))
         self.model.add(TimeDistributed(Dense(40, activation='relu')))
-        self.model.add(TimeDistributed(Dense(12)))
+        self.model.add(TimeDistributed(Dense(self.n_features)))
         self.model.compile(loss='mse', optimizer=Adam(learning_rate=0.0001))
+        self.n_batch=256
         # fit network
-        self.history = self.model.fit(train_X, train_y, epochs=50, batch_size=256, verbose=1,
+        self.history = self.model.fit(train_X, train_y, epochs=30, batch_size=self.n_batch, verbose=1,
                                       validation_data=(test_X, test_y), shuffle=False)
         print(self.history.history)
         print(self.history.history['loss'])
