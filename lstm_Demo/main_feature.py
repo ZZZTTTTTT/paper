@@ -3,8 +3,8 @@ from math import sqrt
 from numpy import concatenate
 from matplotlib import pyplot
 import numpy as np
-from sklearn.metrics import mean_squared_error,mean_absolute_error
-from keras.models import Sequential,Model
+from sklearn.metrics import mean_squared_error
+from keras.models import Sequential
 from keras.layers import Dense, Dropout
 from keras.layers import LSTM
 from pandas import read_csv
@@ -14,20 +14,19 @@ from sklearn.preprocessing import MinMaxScaler
 from keras.optimizers import Adam
 from keras.initializers import Constant
 from keras.layers import Add
-from keras.layers import Layer,Input,Lambda
+from keras.layers import Layer
 from sklearn.preprocessing import LabelEncoder
 from keras.regularizers import l2
 from keras.layers import BatchNormalization
 import pandas as pd
 import abnormal_detect
-import keras
 # import ipdb
 
 
 from matplotlib.pyplot import MultipleLocator
 from keras.layers import RepeatVector
 from keras.layers import TimeDistributed
-from keras import backend as K
+
 
 class ResidualBlock(Layer):
 
@@ -41,28 +40,6 @@ class ResidualBlock(Layer):
         x = Dropout(0.2)(x)
         out = Add()([res, x])  # 添加残差连接
         return out
-
-
-def attention_3d_block(inputs, time_steps, single_attention_vector=True):
-    """
-    :param inputs: 输入格式
-    :param time_steps: 时间步长
-    :param input_dim: 数据维度
-    :param single_attention_vector: True 则多维特征共享一个注意力权重，False则每维特征会单独有一个权重，同时注意力权重变为多维
-    :return: 注意力模型
-    """
-    # inputs.shape = (batch_size, time_steps, input_dim)
-    input_dim = int(inputs.shape[2])
-    a = keras.layers.Permute((2, 1))(inputs)
-    a = keras.layers.Reshape((input_dim, time_steps))(
-        a)  # this line is not useful. It's just to know which dimension is what.
-    a = keras.layers.Dense(time_steps, activation='softmax')(a)
-    if single_attention_vector:
-        a = keras.layers.Lambda(lambda x: keras.backend.mean(x, axis=1), name='dim_reduction')(a)
-        a = keras.layers.RepeatVector(input_dim)(a)
-    a_probs = keras.layers.Permute((2, 1), name='attention_vec')(a)
-    output_attention_mul = keras.layers.Multiply()([inputs, a_probs])
-    return output_attention_mul
 
 
 pd.set_option('display.max_columns', 1000)
@@ -83,7 +60,8 @@ class LSTM_Demo:
 
     def load_data(self):
         # load dataset
-        dataset = read_csv('../data_processing/result.csv', header=0, index_col=0,encoding="ANSI")
+        # dataset = read_csv('../data_processing/result.csv', header=0, index_col=0,encoding="ANSI")
+        dataset = read_csv('../feature/feature.csv', header=0, index_col=0,encoding="utf-8")
         # dataset = read_csv('single.csv', header=0, index_col=0,encoding="ANSI")
         self.n_features = dataset.shape[1]
         return dataset
@@ -172,9 +150,11 @@ class LSTM_Demo:
         self.model = Sequential()
         # kernel_initializer = Constant(value=1.0), bias_initializer = 'zeros'
         self.model.add(
-            LSTM(50, input_shape=(train_X.shape[1], train_X.shape[2]), kernel_initializer=Constant(value=1.0),
+            LSTM(150, input_shape=(train_X.shape[1], train_X.shape[2]), kernel_initializer=Constant(value=1.0),
                  bias_initializer='zeros'))
-        self.model.add(Dropout(0.2))
+        # self.model.add(Dropout(0.2))
+        self.model.add(LSTM(220, activation='relu', return_sequences=True))
+        self.model.add(LSTM(200, activation='relu', return_sequences=True))
         self.model.add(Dense(train_y.shape[1]))
         self.model.compile(loss='mae', optimizer=Adam(learning_rate=1e-3))
         # 拟合网络
@@ -184,34 +164,6 @@ class LSTM_Demo:
 
         # 多步预测
         self.mutil_step_predict(test_X, test_y)
-
-    def do_Attention_train(self):
-        train_X, test_X, test_y, train_y = self.get_splited_data()
-
-        # 设计网络
-        #lstm输入形状[batch_size, time_step, input_size]
-        x = Input(shape=(train_X.shape[1], train_X.shape[2]))
-        lstm_layer = LSTM(200, return_sequences=True, activation='relu')(x)
-        lstm_layer=Dropout(0.3)(lstm_layer)
-
-        lstm_out = attention_3d_block(lstm_layer, self.n_hours, single_attention_vector=False)
-        lstm_out=Dropout(0.3)(lstm_out)
-        lstm_out = LSTM(200, return_sequences=False)(lstm_out)
-        # lstm_out = LSTM(100, return_sequences=False)(lstm_out)
-
-
-        outputs = Dense(train_y.shape[1], activation='relu')(lstm_out)
-        self.model = Model(x, outputs)
-        self.model.compile(loss='mae', optimizer=Adam(learning_rate=0.001))
-
-        # 拟合网络
-        self.history = self.model.fit(train_X, train_y, epochs=60, batch_size=self.n_batch,
-                                      validation_data=(test_X, test_y), verbose=1,
-                                      shuffle=False)
-
-        # 多步预测
-        self.mutil_step_predict(test_X, test_y)
-
 
     def do_ED_train(self):
         train_X, test_X, test_y, train_y = self.get_splited_data()
@@ -244,47 +196,6 @@ class LSTM_Demo:
         # 多步预测
         self.mutil_step_predict(test_X, test_y)
 
-    def do_ED_Attention_train(self):
-        train_X, test_X, test_y, train_y = self.get_splited_data()
-        # reshape output into [samples, timesteps, features]
-        train_y = train_y.reshape((train_y.shape[0], self.n_seq, self.n_features))
-        test_y = test_y.reshape((test_y.shape[0], self.n_seq, self.n_features))
-
-        # 设计网络
-        # lstm输入形状[batch_size, time_step, input_size]
-        x = Input(shape=(train_X.shape[1], train_X.shape[2]))
-        lstm_layer = LSTM(200, return_sequences=True, activation='relu')(x)
-
-
-
-        lstm_out = attention_3d_block(lstm_layer, self.n_hours, single_attention_vector=False)
-        # repeat_layer = Lambda(lambda x: K.repeat_elements(x[:, None, :], train_X.shape[1], axis=1))(lstm_out)
-        #
-        # lstm_out = Dropout(0.3)(repeat_layer)
-        # lstm_out = Dropout(0.3)(lstm_out)
-        lstm_out = LSTM(200, return_sequences=True)(lstm_out)
-
-
-        # 添加残差网络块
-        # self.model.add(ResidualBlock(LSTM(160, return_sequences=True)))
-
-        lstm_out = LSTM(200,activation='relu',  return_sequences=True)(lstm_out)
-        lstm_out = TimeDistributed(Dense(40, activation='relu'))(lstm_out)
-
-        outputs = TimeDistributed(Dense(self.n_features))(lstm_out)
-        self.model = Model(x, outputs)
-        self.model.compile(loss='mae', optimizer=Adam(learning_rate=0.001))
-
-        self.n_batch=256
-        # fit network
-        self.history = self.model.fit(train_X, train_y, epochs=30, batch_size=self.n_batch, verbose=1,
-                                      validation_data=(test_X, test_y), shuffle=False)
-        print(self.history.history)
-        print(self.history.history['loss'])
-        print(self.history.history['val_loss'])
-
-        # 多步预测
-        self.mutil_step_predict(test_X, test_y)
     def do_predict(self):
         train_X, test_X, test_y, train_y = self.get_splited_data()
 
@@ -364,19 +275,12 @@ class LSTM_Demo:
 
     # 评估预测结果的均方差
     def evaluate_forecasts(self, test, forecasts, n_seq):
-        rmseList=[]
-        maeList=[]
         for i in range(n_seq):
             actual = [row[i][-4] for row in test]
             predicted = [forecast[i][-4] for forecast in forecasts]
             rmse = sqrt(mean_squared_error(actual, predicted))
-            mae = mean_absolute_error(actual, predicted)
-            rmseList.append(rmse)
-            maeList.append(mae)
-            print('t+%d MAE: %f' % ((i + 1), mae))
             print('t+%d RMSE: %f' % ((i + 1), rmse))
-        print('rmseList',rmseList)
-        print('maeList',maeList)
+
     def plot(self, inv_y, inv_yhat):
         # plot history
         pyplot.subplot(211)
@@ -409,16 +313,12 @@ class LSTM_Demo:
         actual = [row[0][-4] for row in series]
         # plot the entire dataset in blue
         pyplot.plot(actual)
-        #只画第一个预测点
-        pyplot.plot([row[0][-4] for row in forecasts],color='g')
+        # pyplot.plot([row[0] for row in forecasts])
         # plot the forecasts in red
-        #预测点全画出来
-        # for i in range(len(forecasts)):
-        #     xaxis = [x for x in range(i, i + self.n_seq)]
-        #     yaxis = [forecasts[i][x][-4] for x in range(0, self.n_seq)]
-        #     pyplot.plot(xaxis, yaxis, color='g', linewidth=1, linestyle='--')
-
-
+        for i in range(len(forecasts)):
+            xaxis = [x for x in range(i, i + self.n_seq)]
+            yaxis = [forecasts[i][x][-4] for x in range(0, self.n_seq)]
+            pyplot.plot(xaxis, yaxis, color='g', linewidth=1, linestyle='--')
         # 圈出异常点(这里是按第一个找异常点)
         abnormal_detect.detect_outline(actual, [row[0][-4] for row in forecasts])
         pyplot.savefig('result_image.jpg')
@@ -428,9 +328,7 @@ class LSTM_Demo:
 
 if __name__ == "__main__":
     demo = LSTM_Demo()  # 加载类
-    # demo.do_train()
-    # demo.do_Attention_train()
+    demo.do_train()
     # demo.do_ED_train()
-    demo.do_ED_Attention_train()
     # demo.do_TCN_train()
     # demo.do_predict()
