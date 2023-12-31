@@ -254,25 +254,27 @@ class LSTM_Demo:
         # 设计网络
         # lstm输入形状[batch_size, time_step, input_size]
         x = Input(shape=(train_X.shape[1], train_X.shape[2]))
-        lstm_out = LSTM(200, return_sequences=True, activation='relu')(x)
+        lstm_out = LSTM(400, return_sequences=True, activation='relu')(x)
         # repeat_layer = Lambda(lambda x: K.repeat_elements(x[:, None, :], train_y.shape[1], axis=1))(lstm_out)
         #
         # lstm_out = Dropout(0.3)(repeat_layer)
 
+        lstm_out = Dropout(0.4)(lstm_out)
 
         lstm_out = attention_3d_block(lstm_out, self.n_hours, single_attention_vector=False)
 
-        # lstm_out = Dropout(0.3)(lstm_out)
-        lstm_out = LSTM(200, return_sequences=True)(lstm_out)
+        # lstm_out = Dropout(0.4)(lstm_out)
+        # lstm_out = LSTM(40, return_sequences=True)(lstm_out)
 
 
         # 添加残差网络块
         # self.model.add(ResidualBlock(LSTM(160, return_sequences=True)))
 
-        lstm_out = LSTM(200,activation='relu',  return_sequences=False)(lstm_out)
+        lstm_out = LSTM(320,activation='relu',  return_sequences=False)(lstm_out)
         lstm_out = Lambda(lambda x: K.repeat_elements(x[:, None, :], train_y.shape[1], axis=1))(lstm_out)
 
-        lstm_out = TimeDistributed(Dense(40, activation='relu'))(lstm_out)
+        lstm_out = TimeDistributed(Dense(200, activation='relu'))(lstm_out)
+        # lstm_out = Dropout(0.3)(lstm_out)
 
         outputs = TimeDistributed(Dense(self.n_features))(lstm_out)
         self.model = Model(x, outputs)
@@ -280,7 +282,7 @@ class LSTM_Demo:
         print(self.model.summary())
         self.n_batch=256
         # fit network
-        self.history = self.model.fit(train_X, train_y, epochs=30, batch_size=self.n_batch, verbose=1,
+        self.history = self.model.fit(train_X, train_y, epochs=50, batch_size=self.n_batch, verbose=1,
                                       validation_data=(test_X, test_y), shuffle=False)
         print(self.history.history)
         print(self.history.history['loss'])
